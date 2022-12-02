@@ -13,6 +13,7 @@ type
   TDmConnection = class(TDataModule)
     Connection: TFDConnection;
     FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
+    FDTransaction1: TFDTransaction;
   private
     { Private declarations }
   public

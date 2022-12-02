@@ -17,6 +17,9 @@ type
       function GetProducts: TList<TORDERS_PRODUCTS>;
     procedure SetID(const Value: Integer);
     public
+      constructor Create;
+      destructor Destroy; override;
+
       procedure AddProduct(const AProduct: TORDERS_PRODUCTS);
       function RemoveProduct(const AProduct: TORDERS_PRODUCTS): Boolean;
 
@@ -34,6 +37,17 @@ implementation
 procedure TORDERS.AddProduct(const AProduct: TORDERS_PRODUCTS);
 begin
   FPRODUCTS.Add(AProduct);
+end;
+
+constructor TORDERS.Create;
+begin
+  FPRODUCTS := TList<TORDERS_PRODUCTS>.Create;
+end;
+
+destructor TORDERS.Destroy;
+begin
+  FPRODUCTS.Free;
+  inherited;
 end;
 
 function TORDERS.GetProducts: TList<TORDERS_PRODUCTS>;
@@ -66,7 +80,7 @@ begin
     FID := Value;
     for var LProduct: TORDERS_PRODUCTS in FProducts do
     begin
-      LProduct.ID := Value;
+      LProduct.ORDER_ID := Value;
     end;
   end;
 end;

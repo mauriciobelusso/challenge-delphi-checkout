@@ -19,7 +19,6 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     btnFinalizarVenda: TButton;
-    btnCancelar: TButton;
     Panel3: TPanel;
     btnAddProduto: TButton;
     FDMemTable1: TFDMemTable;
@@ -31,7 +30,7 @@ type
     edtUnitValue: TLabeledEdit;
     edtProductId: TEdit;
     edtTotal: TLabeledEdit;
-    lblClliente: TLabel;
+    lblCustomer: TLabel;
     lblProduct: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnFinalizarVendaClick(Sender: TObject);
@@ -41,16 +40,20 @@ type
     procedure edtUnitValueKeyPress(Sender: TObject; var Key: Char);
     procedure edtCustomerIdExit(Sender: TObject);
     procedure edtProductIdExit(Sender: TObject);
+    procedure DBGrid1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FDMemTable1AfterPost(DataSet: TDataSet);
+    procedure FDMemTable1AfterDelete(DataSet: TDataSet);
+    procedure FDMemTable1BeforePost(DataSet: TDataSet);
   private
     { Private declarations }
     FController: iControllerOrders;
-    procedure BindModelToView(const AOrder: TORDERS);
     procedure BindViewToModel(const AOrder: TORDERS);
     procedure OpenOrderProducts;
     procedure AddProduct;
     procedure CheckProduct;
     procedure FindCustomer;
     procedure FindProduct;
+    procedure EvaluateSubTotal;
   public
     { Public declarations }
   end;
@@ -65,16 +68,13 @@ implementation
 procedure TFrmMain.AddProduct;
 begin
   FDMemTable1.Insert;
+  FDMemTable1.FieldByName('PRODUCT_ID').AsInteger := StrToIntDef(edtProductId.Text, 0);
+  FDMemTable1.FieldByName('DESCRIPTION').ReadOnly := False;
+  FDMemTable1.FieldByName('DESCRIPTION').AsString := edtProduct.Text;
+  FDMemTable1.FieldByName('DESCRIPTION').ReadOnly := True;
   FDMemTable1.FieldByName('QUANTITY').AsFloat := StrToFloatDef(edtQuantity.Text, 0);
   FDMemTable1.FieldByName('UNIT_VALUE').AsCurrency:= StrToCurrDef(edtUnitValue.Text, 0);
-  FDMemTable1.FieldByName('TOTAL').AsCurrency :=
-    FDMemTable1.FieldByName('QUANTITY').AsFloat * FDMemTable1.FieldByName('UNIT_VALUE').AsCurrency;
   FDMemTable1.Post;
-end;
-
-procedure TFrmMain.BindModelToView(const AOrder: TORDERS);
-begin
-
 end;
 
 procedure TFrmMain.BindViewToModel(const AOrder: TORDERS);
@@ -82,9 +82,9 @@ var
   LBookmark: TBookmark;
   LProduct: TORDERS_PRODUCTS;
 begin
-  AOrder.CUSTOMER_ID := 0;
+  AOrder.CUSTOMER_ID := StrToIntDef(edtCustomerId.Text, 0);
   AOrder.ISSUE_DATE := Now;
-  AOrder.TOTAL := 0;
+  AOrder.TOTAL := StrToCurrDef(edtTotal.Text, 0);
 
   try
     FDMemTable1.DisableControls;
@@ -95,6 +95,7 @@ begin
       LProduct := TORDERS_PRODUCTS.Create;
       try
         LProduct.ID := FDMemTable1.FieldByName('ID').AsInteger;
+        LProduct.PRODUCT_ID := FDMemTable1.FieldByName('PRODUCT_ID').AsInteger;
         LProduct.ORDER_ID := FDMemTable1.FieldByName('ORDER_ID').AsInteger;
         LProduct.QUANTITY := FDMemTable1.FieldByName('QUANTITY').AsFloat;
         LProduct.UNIT_VALUE := FDMemTable1.FieldByName('UNIT_VALUE').AsCurrency;
@@ -116,6 +117,11 @@ procedure TFrmMain.btnAddProdutoClick(Sender: TObject);
 begin
   CheckProduct;
   AddProduct;
+  edtUnitValue.Text := EmptyStr;
+  edtQuantity.Text := EmptyStr;
+  edtProductId.Text := EmptyStr;
+  edtProduct.Text := EmptyStr;
+  edtProductId.SetFocus;
 end;
 
 procedure TFrmMain.btnFinalizarVendaClick(Sender: TObject);
@@ -126,7 +132,15 @@ begin
   try
     BindViewToModel(LOrder);
     FController.Save(LOrder);
+    edtCustomer.Text := EmptyStr;
+    edtCustomerId.Text := EmptyStr;
+    edtProduct.Text := EmptyStr;
+    edtProductId.Text := EmptyStr;
     OpenOrderProducts;
+    edtTotal.Text := EmptyStr;
+    lblCustomer.Caption := EmptyStr;
+    lblProduct.Caption := EmptyStr;
+    edtCustomerId.SetFocus;
   finally
     LOrder.Free;
   end;
@@ -136,10 +150,20 @@ procedure TFrmMain.CheckProduct;
 begin
   if not (StrToIntDef(edtProductId.Text, 0) > 0) then
     raise Exception.Create('Informe o Produto'); 
-  if not (StrToIntDef(edtQuantity.Text, 0) > 0) then
+  if not (StrToCurrDef(edtQuantity.Text, 0) > 0) then
     raise Exception.Create('Informe a Quantidade');
-  if not (StrToIntDef(edtUnitValue.Text, 0) > 0) then
+  if not (StrToCurrDef(edtUnitValue.Text, 0) > 0) then
     raise Exception.Create('Informe o Valor Unitário');
+end;
+
+procedure TFrmMain.DBGrid1KeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if FDMemTable1.IsEmpty then Exit;
+  
+  if Key = 46 then
+    if MessageDlg('Apagar registro?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+       FDMemTable1.Delete;
 end;
 
 procedure TFrmMain.edtCustomerIdExit(Sender: TObject);
@@ -154,22 +178,98 @@ end;
 
 procedure TFrmMain.edtQuantityKeyPress(Sender: TObject; var Key: Char);
 begin
-  if (not (CharInSet(Key, ['0'..'9', '.', #8, #9]))) OR ( (Key = '.') and (Pos('.',TEdit(Sender).Text)>0) ) then Key := #0;
+  if (not (CharInSet(Key, ['0'..'9', '.', #8, #9]))) or ((Key = '.') and (Pos('.', TEdit(Sender).Text)>0)) then Key := #0;
 end;
 
 procedure TFrmMain.edtUnitValueKeyPress(Sender: TObject; var Key: Char);
 begin
-  if (not (CharInSet(Key, ['0'..'9', '.', #8, #9]))) OR ( (Key = '.') and (Pos('.',TEdit(Sender).Text)>0) ) then Key := #0;
+  if (not (CharInSet(Key, ['0'..'9', '.', #8, #9]))) or ((Key = '.') and (Pos('.', TEdit(Sender).Text)>0)) then Key := #0;
+end;
+
+procedure TFrmMain.EvaluateSubTotal;
+var
+  LClone: TFDMemTable;
+  LSubTotal: Currency;
+begin
+  LSubTotal := 0;
+  LClone := TFDMemTable.Create(nil);
+  try
+    LClone.CloneCursor(FDMemTable1);
+    while not LClone.Eof do
+    begin
+      LSubTotal := LSubTotal + LClone.FieldByName('TOTAL').AsCurrency;
+      LClone.Next;
+    end;
+  finally
+    LClone.Free;
+  end;
+  edtTotal.Text := FormatCurr('0.00',LSubTotal);
+end;
+
+procedure TFrmMain.FDMemTable1AfterDelete(DataSet: TDataSet);
+begin
+  EvaluateSubTotal;
+end;
+
+procedure TFrmMain.FDMemTable1AfterPost(DataSet: TDataSet);
+begin
+  EvaluateSubTotal;
+end;
+
+procedure TFrmMain.FDMemTable1BeforePost(DataSet: TDataSet);
+begin
+  FDMemTable1.FieldByName('TOTAL').AsCurrency :=
+    FDMemTable1.FieldByName('QUANTITY').AsFloat * FDMemTable1.FieldByName('UNIT_VALUE').AsCurrency;
 end;
 
 procedure TFrmMain.FindCustomer;
+var
+  LQry: TFDQuery;
 begin
-  
+  LQry := nil;
+  try
+    TController.New
+      .Customers
+        .FindById(StrToIntDef(edtCustomerId.Text, 0), TDataSet(LQry));
+
+    if LQry.IsEmpty then
+    begin
+      lblCustomer.Caption := 'Não encontrado';
+      edtCustomer.Text := LQry.FieldByName('NAME').AsString;
+    end
+    else
+    begin
+      lblCustomer.Caption := EmptyStr;
+      edtCustomer.Text := LQry.FieldByName('NAME').AsString;
+    end;
+  finally
+    LQry.Free;
+  end;
 end;
 
 procedure TFrmMain.FindProduct;
+var
+  LQry: TFDQuery;
 begin
+  LQry := nil;
+  try
+    TController.New
+      .Products
+        .FindById(StrToIntDef(edtProductId.Text, 0), TDataSet(LQry));
 
+    if LQry.IsEmpty then
+    begin
+      lblProduct.Caption := 'Não encontrado';
+      edtProduct.Text := EmptyStr;
+    end
+    else
+    begin
+      lblProduct.Caption := EmptyStr;
+      edtProduct.Text := LQry.FieldByName('DESCRIPTION').AsString;
+    end;
+  finally
+    LQry.Free;
+  end;
 end;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
@@ -190,8 +290,17 @@ var
 begin
   LQuery := nil;
   try
-    FController.Items.FindByOrderId(-1, TDataSet(LQuery));
+    FController.Items.FindByOrderId(0, TDataSet(LQuery));
     FDMemTable1.CloneCursor(LQuery);
+    for var LField: TField in FDMemTable1.Fields do
+    begin
+      if (LField is TFloatField) or (LField is TFMTBCDField) then
+      begin
+        var LFieldFloat := TFloatField(LField);
+        LFieldFloat.DisplayFormat := '0.00';
+        LFieldFloat.EditFormat := '0.00';
+      end;
+    end;
   finally
     LQuery.Free;
   end;

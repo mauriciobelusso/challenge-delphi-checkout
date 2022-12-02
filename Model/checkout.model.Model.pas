@@ -6,7 +6,11 @@ uses
   checkout.model.ModelInterfaces,
   checkout.model.orders.ordersinterfaces,
   checkout.model.orders,
-  checkout.model.orders.orderproducts;
+  checkout.model.orders.orderproducts,
+  checkout.model.customersinterfaces,
+  checkout.model.customers,
+  checkout.model.productsinterfaces,
+  checkout.model.products;
 
 type
   TModel = class(TInterfacedObject, iModel)
@@ -16,6 +20,8 @@ type
 
       function Orders: iModelOrders;
       function OrdersProducts: iModelOrdersProducts;
+      function Customers: iModelCustomers;
+      function Products: iModelProducts;
   end;
 
 implementation
@@ -40,6 +46,16 @@ end;
 function TModel.OrdersProducts: iModelOrdersProducts;
 begin
   Result := TModelOrdersProducts.New;
+end;
+
+function TModel.Products: iModelProducts;
+begin
+  Result := TModelProducts.New;
+end;
+
+function TModel.Customers: iModelCustomers;
+begin
+  Result := TModelCustomers.New;
 end;
 
 end.

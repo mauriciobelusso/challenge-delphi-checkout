@@ -6,7 +6,11 @@ uses
   checkout.controller.ControllerInterfaces,
   checkout.controller.orders.ordersinterfaces,
   checkout.controller.orders.orders,
-  checkout.controller.orders.ordersproducts;
+  checkout.controller.orders.ordersproducts,
+  checkout.controller.customersinterfaces,
+  checkout.controller.customers,
+  checkout.controller.productsinterfaces,
+  checkout.controller.products;
 
 type
   TController = class(TInterfacedObject, iController)
@@ -15,6 +19,8 @@ type
       class function New: iController;
       function Orders: iControllerOrders;
       function OrdersProducts: iControllerOrdersProducts;
+      function Customers: iControllerCustomers;
+      function Products: iControllerProducts;
   end;
 
 implementation
@@ -24,6 +30,11 @@ implementation
 constructor TController.Create;
 begin
 
+end;
+
+function TController.Customers: iControllerCustomers;
+begin
+  Result := TControllerCustomers.New;
 end;
 
 class function TController.New: iController;
@@ -39,6 +50,11 @@ end;
 function TController.OrdersProducts: iControllerOrdersProducts;
 begin
   Result := TControllerOrdersProducts.New;
+end;
+
+function TController.Products: iControllerProducts;
+begin
+  Result := TControllerProducts.New;
 end;
 
 end.

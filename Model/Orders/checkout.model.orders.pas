@@ -7,6 +7,7 @@ uses
   System.Classes,
   Data.DB,
   DataSnap.DBClient,
+  System.Generics.Collections,
   checkout.model.orders.ordersinterfaces,
   checkout.model.entity.orders,
   checkout.model.orders.orderproducts,
@@ -39,42 +40,51 @@ begin
   FModelOrdersProducts := TModelOrdersProducts.New;
 end;
 
-function TModelOrders.delete(const AOrder: TOrders): iModelOrders;
+function TModelOrders.Delete(const AOrder: TOrders): iModelOrders;
 begin
   Result := Self;
   ConnectionDB.DmConnection.Connection.ExecSQL('DELETE FROM ORDERS WHERE ID = :ID', [AOrder.ID]);
 end;
 
-function TModelOrders.find(var ADataSet: TDataSet): iModelOrders;
+function TModelOrders.Find(var ADataSet: TDataSet): iModelOrders;
 begin
   Result := Self;
   ConnectionDB.DmConnection.Connection.ExecSQL('SELECT * FROM ORDERS', ADataSet);
 end;
 
 procedure TModelOrders.Insert(const AOrder: TOrders);
+var
+  LProducts: TList<TORDERS_PRODUCTS>;
 begin
+  LProducts := nil;
   ConnectionDB.DmConnection.Connection.Transaction.StartTransaction;
   try
-    ConnectionDB.DmConnection.Connection.ExecSQL(
-      'INSERT INTO ORDERS(CUSTOMER_ID, ISSUE_DATE, TOTAL)'+
-      'VALUES(:CUSTOMER_ID, :ISSUE_DATE, :TOTAL)',
-      [AOrder.CUSTOMER_ID, AOrder.ISSUE_DATE, AOrder.TOTAL]
-    );
+    try
+      ConnectionDB.DmConnection.Connection.ExecSQL(
+        'INSERT INTO ORDERS(CUSTOMER_ID, ISSUE_DATE, TOTAL)'+
+        'VALUES(:CUSTOMER_ID, :ISSUE_DATE, :TOTAL)',
+        [AOrder.CUSTOMER_ID, AOrder.ISSUE_DATE, AOrder.TOTAL]
+      );
 
-    AOrder.ID := ConnectionDB.DmConnection.Connection.GetLastAutoGenValue('');
+      AOrder.ID := ConnectionDB.DmConnection.Connection.GetLastAutoGenValue('');
 
-    for var LItem: TORDERS_PRODUCTS in AOrder.PRODUCTS do
-    begin
-      FModelOrdersProducts.Save(LItem);
+      LProducts := AOrder.PRODUCTS;
+
+      for var LItem: TORDERS_PRODUCTS in LProducts do
+      begin
+        FModelOrdersProducts.Save(LItem);
+      end;
+
+      ConnectionDB.DmConnection.Connection.Transaction.Commit;
+    except
+      on E: Exception do
+      begin
+        ConnectionDB.DmConnection.Connection.Transaction.Rollback;
+        raise;
+      end;
     end;
-
-    ConnectionDB.DmConnection.Connection.Transaction.Commit;
-  except
-    on E: Exception do
-    begin
-      ConnectionDB.DmConnection.Connection.Transaction.Rollback;
-      raise;
-    end;
+  finally
+    LProducts.Free;
   end;
 end;
 
@@ -93,27 +103,36 @@ begin
 end;
 
 procedure TModelOrders.Update(const AOrder: TOrders);
+var
+  LProducts: TList<TORDERS_PRODUCTS>;
 begin
+  LProducts := nil;
   ConnectionDB.DmConnection.Connection.Transaction.StartTransaction;
   try
-    ConnectionDB.DmConnection.Connection.ExecSQL(
-      'UPDATE ORDERS SET CUSTOMER_ID = :CUSTOMER_ID, ISSUE_DATE = :ISSUE_DATE, TOTAL = :TOTAL'+
-      ' WHERE ID = :ID',
-      [AOrder.CUSTOMER_ID, AOrder.ISSUE_DATE, AOrder.TOTAL, AOrder.ID]
-    );
+    try
+      ConnectionDB.DmConnection.Connection.ExecSQL(
+        'UPDATE ORDERS SET CUSTOMER_ID = :CUSTOMER_ID, ISSUE_DATE = :ISSUE_DATE, TOTAL = :TOTAL'+
+        ' WHERE ID = :ID',
+        [AOrder.CUSTOMER_ID, AOrder.ISSUE_DATE, AOrder.TOTAL, AOrder.ID]
+      );
 
-    for var LItem: TORDERS_PRODUCTS in AOrder.PRODUCTS do
-    begin
-      FModelOrdersProducts.Save(LItem);
-    end;
+      LProducts := AOrder.PRODUCTS;
 
-    ConnectionDB.DmConnection.Connection.Transaction.Commit;
-  except
-    on E: Exception do
-    begin
-      ConnectionDB.DmConnection.Connection.Transaction.Rollback;
-      raise;
+      for var LItem: TORDERS_PRODUCTS in LProducts do
+      begin
+        FModelOrdersProducts.Save(LItem);
+      end;
+
+      ConnectionDB.DmConnection.Connection.Transaction.Commit;
+    except
+      on E: Exception do
+      begin
+        ConnectionDB.DmConnection.Connection.Transaction.Rollback;
+        raise;
+      end;
     end;
+  finally
+    LProducts.Free;
   end;
 end;
 

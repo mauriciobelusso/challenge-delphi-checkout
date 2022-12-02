@@ -18,7 +18,15 @@ uses
   checkout.controller.orders.ordersinterfaces in 'Controller\Orders\checkout.controller.orders.ordersinterfaces.pas',
   checkout.controller.orders.orders in 'Controller\Orders\checkout.controller.orders.orders.pas',
   checkout.controller.orders.ordersproducts in 'Controller\Orders\checkout.controller.orders.ordersproducts.pas',
-  checkout.model.orders.orderproducts in 'Model\Orders\checkout.model.orders.orderproducts.pas';
+  checkout.model.orders.orderproducts in 'Model\Orders\checkout.model.orders.orderproducts.pas',
+  checkout.model.customers in 'Model\checkout.model.customers.pas',
+  checkout.model.products in 'Model\checkout.model.products.pas',
+  checkout.model.customersinterfaces in 'Model\checkout.model.customersinterfaces.pas',
+  checkout.model.productsinterfaces in 'Model\checkout.model.productsinterfaces.pas',
+  checkout.controller.customersinterfaces in 'Controller\checkout.controller.customersinterfaces.pas',
+  checkout.controller.customers in 'Controller\checkout.controller.customers.pas',
+  checkout.controller.products in 'Controller\checkout.controller.products.pas',
+  checkout.controller.productsinterfaces in 'Controller\checkout.controller.productsinterfaces.pas';
 
 {$R *.res}
 

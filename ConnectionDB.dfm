@@ -10,6 +10,7 @@ object DmConnection: TDmConnection
       'Server=localhost'
       'DriverID=MySQL')
     LoginPrompt = False
+    Transaction = FDTransaction1
     Left = 88
     Top = 88
   end
@@ -17,5 +18,10 @@ object DmConnection: TDmConnection
     VendorLib = 'lib\libmysql.dll'
     Left = 96
     Top = 32
+  end
+  object FDTransaction1: TFDTransaction
+    Connection = Connection
+    Left = 144
+    Top = 96
   end
 end

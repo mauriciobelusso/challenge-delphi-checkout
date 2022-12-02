@@ -37,6 +37,7 @@ object FrmMain: TFrmMain
       TitleFont.Height = -11
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
+      OnKeyUp = DBGrid1KeyUp
       Columns = <
         item
           Alignment = taRightJustify
@@ -94,17 +95,8 @@ object FrmMain: TFrmMain
         Height = 41
         Align = alRight
         Caption = 'Gravar Pedido'
-        TabOrder = 1
-        OnClick = btnFinalizarVendaClick
-      end
-      object btnCancelar: TButton
-        Left = 0
-        Top = 0
-        Width = 228
-        Height = 41
-        Align = alLeft
-        Caption = 'Cancelar'
         TabOrder = 0
+        OnClick = btnFinalizarVendaClick
       end
     end
     object Panel2: TPanel
@@ -115,7 +107,6 @@ object FrmMain: TFrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitTop = 530
       DesignSize = (
         1252
         50)
@@ -140,7 +131,6 @@ object FrmMain: TFrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 95
       object btnAddProduto: TButton
         Left = 0
         Top = 0
@@ -160,8 +150,7 @@ object FrmMain: TFrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 121
-      object lblClliente: TLabel
+      object lblCustomer: TLabel
         Left = 303
         Top = 27
         Width = 3
@@ -181,6 +170,7 @@ object FrmMain: TFrmMain
         EditLabel.Width = 33
         EditLabel.Height = 13
         EditLabel.Caption = 'Cliente'
+        ReadOnly = True
         TabOrder = 1
       end
       object edtProduct: TLabeledEdit
@@ -250,6 +240,9 @@ object FrmMain: TFrmMain
     Top = 264
   end
   object FDMemTable1: TFDMemTable
+    BeforePost = FDMemTable1BeforePost
+    AfterPost = FDMemTable1AfterPost
+    AfterDelete = FDMemTable1AfterDelete
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]

@@ -56,7 +56,7 @@ begin
   LParams := TFDParams.Create;
   try
     LParams.Add('ORDER_ID', AOrderId);
-    ConnectionDB.DmConnection.Connection.ExecSQL('SELECT * FROM ORDERS_PRODUCTS WHERE ORDER_ID = :ORDER_ID', LParams, ADataSet);
+    ConnectionDB.DmConnection.Connection.ExecSQL('SELECT ORDERS_PRODUCTS.*, PRODUCTS.DESCRIPTION FROM ORDERS_PRODUCTS JOIN PRODUCTS ON PRODUCTS.ID = ORDERS_PRODUCTS.PRODUCT_ID WHERE ORDER_ID = :ORDER_ID', LParams, ADataSet);
   finally
     LParams.Free;
   end;
@@ -90,7 +90,7 @@ end;
 procedure TModelOrdersProducts.Update(const AOrderProducts: TORDERS_PRODUCTS);
 begin
   ConnectionDB.DmConnection.Connection.ExecSQL(
-    'UPDATE ORDERS_PRODUCTS SET ORDER_ID = :ORDER_ID, PRODUCT_ID = :PRODUCT_ID, QUANTITY = :QUANTITY, UNIT_VALUE = :UNIT_VALUE, TOTAL = :TOTAL)'+
+    'UPDATE ORDERS_PRODUCTS SET ORDER_ID = :ORDER_ID, PRODUCT_ID = :PRODUCT_ID, QUANTITY = :QUANTITY, UNIT_VALUE = :UNIT_VALUE, TOTAL = :TOTAL'+
     ' WHERE ID = :ID',
     [AOrderProducts.ORDER_ID, AOrderProducts.PRODUCT_ID, AOrderProducts.QUANTITY, AOrderProducts.UNIT_VALUE, AOrderProducts.TOTAL, AOrderProducts.ID]);
 end;

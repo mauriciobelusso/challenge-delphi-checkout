@@ -4,7 +4,8 @@ interface
 
 uses
   Data.DB,
-  checkout.model.entity.orders;
+  checkout.model.entity.orders,
+  checkout.model.entity.orders_products;
 
 type
   iControllerOrdersProducts = interface;
@@ -20,8 +21,8 @@ type
   iControllerOrdersProducts = interface
     ['{4BF937A4-C28E-4543-B0E8-88ADE11AC732}']
     function Find(var ADataSet: TDataSet): iControllerOrdersProducts;
-    function Save(const AOrder: TOrders): iControllerOrdersProducts;
-    function Delete(const AOrder: TOrders): iControllerOrdersProducts;
+    function Save(const AOrderProducts: TORDERS_PRODUCTS): iControllerOrdersProducts;
+    function Delete(const AOrderProducts: TORDERS_PRODUCTS): iControllerOrdersProducts;
     function FindByOrderId(const AOrderId: Integer; var ADataSet: TDataSet): iControllerOrdersProducts;
   end;
 

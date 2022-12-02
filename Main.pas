@@ -60,6 +60,7 @@ procedure TFrmMain.FormShow(Sender: TObject);
 var
   LQuery: TFDQuery;
 begin
+  LQuery := nil;
   try
     FController.find(TDataSet(LQuery));
     FDMemTable1.CloneCursor(LQuery);

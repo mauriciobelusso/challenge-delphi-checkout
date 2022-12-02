@@ -16,9 +16,10 @@ type
     public
       constructor Create;
       class function New: iControllerOrdersInterfaces;
-      function find(var ADataSet: TDataSet): iControllerOrdersInterfaces;
-      function save(const AOrder: TOrders): iControllerOrdersInterfaces;
-      function delete(const AOrder: TOrders): iControllerOrdersInterfaces;
+      function Find(var ADataSet: TDataSet): iControllerOrdersInterfaces;
+      function Save(const AOrder: TOrders): iControllerOrdersInterfaces;
+      function Delete(const AOrder: TOrders): iControllerOrdersInterfaces;
+      function Items(): iControllerOrdersProductsInterfaces;
   end;
 
 implementation
@@ -30,16 +31,21 @@ begin
   FModel := TModel.New.Orders;
 end;
 
-function TControllerOrders.delete(const AOrder: TOrders): iControllerOrdersInterfaces;
+function TControllerOrders.Delete(const AOrder: TOrders): iControllerOrdersInterfaces;
 begin
   Result := Self;
   FModel.delete(AOrder);
 end;
 
-function TControllerOrders.find(var ADataSet: TDataSet): iControllerOrdersInterfaces;
+function TControllerOrders.Find(var ADataSet: TDataSet): iControllerOrdersInterfaces;
 begin
   Result := Self;
   FModel.find(ADataSet);
+end;
+
+function TControllerOrders.Items: iControllerOrdersProductsInterfaces;
+begin
+//  Result :=
 end;
 
 class function TControllerOrders.New: iControllerOrdersInterfaces;
@@ -47,7 +53,7 @@ begin
   Result := Self.Create;
 end;
 
-function TControllerOrders.save(const AOrder: TOrders): iControllerOrdersInterfaces;
+function TControllerOrders.Save(const AOrder: TOrders): iControllerOrdersInterfaces;
 begin
   Result := Self;
   FModel.save(AOrder);

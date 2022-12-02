@@ -130,6 +130,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="ConnectionDB.pas">
+            <Form>DmConnection</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <DCCReference Include="Main.pas">
             <Form>FrmMain</Form>
             <FormType>dfm</FormType>
@@ -140,17 +144,13 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="Model\Entity\checkout.model.entity.orders_products.pas"/>
         <DCCReference Include="Model\Orders\checkout.model.orders.pas"/>
         <DCCReference Include="Model\Orders\checkout.model.orders.ordersinterfaces.pas"/>
-        <DCCReference Include="ConnectionDB.pas">
-            <Form>DmConnection</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
         <DCCReference Include="Model\checkout.model.model.pas"/>
         <DCCReference Include="Model\checkout.model.modelinterfaces.pas"/>
         <DCCReference Include="Controller\checkout.controller.controller.pas"/>
         <DCCReference Include="Controller\checkout.controller.controllerinterfaces.pas"/>
         <DCCReference Include="Controller\Orders\checkout.controller.orders.ordersinterfaces.pas"/>
         <DCCReference Include="Controller\Orders\checkout.controller.orders.orders.pas"/>
+        <DCCReference Include="Controller\Orders\checkout.controller.orders.ordersproducts.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -22,6 +22,7 @@ type
     function Find(var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
     function Save(const AOrder: TOrders): iControllerOrdersProductsInterfaces;
     function Delete(const AOrder: TOrders): iControllerOrdersProductsInterfaces;
+    function FindByOrderId(const AOrderId: Integer; var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
   end;
 
 implementation

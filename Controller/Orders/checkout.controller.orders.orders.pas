@@ -7,7 +7,8 @@ uses
   checkout.model.entity.orders,
   checkout.controller.orders.ordersinterfaces,
   checkout.model.orders.ordersinterfaces,
-  checkout.model.model;
+  checkout.model.model,
+  checkout.controller.orders.ordersproducts;
 
 type
   TControllerOrders = class(TInterfacedObject, iControllerOrdersInterfaces)
@@ -45,7 +46,7 @@ end;
 
 function TControllerOrders.Items: iControllerOrdersProductsInterfaces;
 begin
-//  Result :=
+  Result := TControllerOrdersProducts.New;
 end;
 
 class function TControllerOrders.New: iControllerOrdersInterfaces;
@@ -56,7 +57,7 @@ end;
 function TControllerOrders.Save(const AOrder: TOrders): iControllerOrdersInterfaces;
 begin
   Result := Self;
-  FModel.save(AOrder);
+  FModel.Save(AOrder);
 end;
 
 end.

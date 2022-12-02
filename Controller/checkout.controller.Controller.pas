@@ -5,7 +5,8 @@ interface
 uses
   checkout.controller.ControllerInterfaces,
   checkout.controller.orders.ordersinterfaces,
-  checkout.controller.orders.orders;
+  checkout.controller.orders.orders,
+  checkout.controller.orders.ordersproducts;
 
 type
   TController = class(TInterfacedObject, iControllerInterfaces)
@@ -13,6 +14,7 @@ type
       constructor Create;
       class function New: iControllerInterfaces;
       function Orders: iControllerOrdersInterfaces;
+      function OrdersProducts: iControllerOrdersProductsInterfaces;
   end;
 
 implementation
@@ -32,6 +34,11 @@ end;
 function TController.Orders: iControllerOrdersInterfaces;
 begin
   Result := TControllerOrders.New;
+end;
+
+function TController.OrdersProducts: iControllerOrdersProductsInterfaces;
+begin
+  Result := TControllerOrdersProducts.New;
 end;
 
 end.

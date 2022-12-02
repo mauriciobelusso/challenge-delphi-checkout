@@ -8,60 +8,50 @@ uses
   checkout.controller.orders.ordersinterfaces;
 
 type
-  TControllerOrdersProductsInterfaces = class(TInterfacedObject, iControllerOrdersProductsInterfaces)
-    private
-      FOrder: TOrders;
+  TControllerOrdersProducts = class(TInterfacedObject, iControllerOrdersProductsInterfaces)
     public
-      constructor Create; overload;
-      class function New: iControllerOrdersProductsInterfaces; overload;
-
-
-      constructor Create(const AOrder: TOrders); overload;
-      class function New(const AOrder: TOrders): iControllerOrdersProductsInterfaces; overload;
+      constructor Create;
+      class function New: iControllerOrdersProductsInterfaces;
 
       function Find(var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
       function Save(const AOrder: TOrders): iControllerOrdersProductsInterfaces;
       function Delete(const AOrder: TOrders): iControllerOrdersProductsInterfaces;
+      function FindByOrderId(const AOrderId: Integer; var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
   end;
 
 implementation
 
-{ TControllerOrdersProductsInterfaces }
+{ TControllerOrdersProducts }
 
-constructor TControllerOrdersProductsInterfaces.Create;
+constructor TControllerOrdersProducts.Create;
 begin
 
 end;
 
-constructor TControllerOrdersProductsInterfaces.Create(const AOrder: TOrders);
-begin
-  FOrder := AOrder;
-end;
-
-function TControllerOrdersProductsInterfaces.Delete(
+function TControllerOrdersProducts.Delete(
   const AOrder: TOrders): iControllerOrdersProductsInterfaces;
 begin
   Result := Self;
 end;
 
-function TControllerOrdersProductsInterfaces.Find(
+function TControllerOrdersProducts.Find(
   var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
 begin
   Result := Self;
 end;
 
-class function TControllerOrdersProductsInterfaces.New(
-  const AOrder: TOrders): iControllerOrdersProductsInterfaces;
+function TControllerOrdersProducts.FindByOrderId(const AOrderId: Integer;
+  var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
 begin
-  Result := Self.Create(AOrder);
+  Result := Self;
 end;
 
-class function TControllerOrdersProductsInterfaces.New: iControllerOrdersProductsInterfaces;
+class function TControllerOrdersProducts.New: iControllerOrdersProductsInterfaces;
 begin
   Result := Self.Create;
 end;
 
-function TControllerOrdersProductsInterfaces.Save(
+function TControllerOrdersProducts.Save(
   const AOrder: TOrders): iControllerOrdersProductsInterfaces;
 begin
   Result := Self;

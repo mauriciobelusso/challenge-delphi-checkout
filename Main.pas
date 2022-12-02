@@ -5,7 +5,11 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.Grids,
-  Vcl.DBGrids, Vcl.StdCtrls, ConnectionDB, checkout.controller.controller;
+  Vcl.DBGrids, Vcl.StdCtrls, ConnectionDB, checkout.controller.controller,
+  checkout.controller.orders.ordersinterfaces, Datasnap.DBClient,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
 
 type
   TFrmMain = class(TForm)
@@ -22,10 +26,13 @@ type
     LabeledEdit4: TLabeledEdit;
     Panel3: TPanel;
     btnAddProduto: TButton;
+    FDMemTable1: TFDMemTable;
     procedure FormCreate(Sender: TObject);
     procedure btnFinalizarVendaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+    FController: iControllerOrdersInterfaces;
   public
     { Public declarations }
   end;
@@ -39,13 +46,27 @@ implementation
 
 procedure TFrmMain.btnFinalizarVendaClick(Sender: TObject);
 begin
-  TController.New.Orders
-    .save(nil);
+  FController.save(nil);
 end;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
 begin
   ConnectionDB.DmConnection.Connection.Connected := True;
+
+  FController := TController.New.Orders;
+end;
+
+procedure TFrmMain.FormShow(Sender: TObject);
+var
+  LQuery: TFDQuery;
+begin
+  LQuery := TFDQuery.Create(Self);
+  try
+    FController.find(TDataSet(LQuery));
+    FDMemTable1.CloneCursor(LQuery);
+  finally
+    LQuery.Free;
+  end;
 end;
 
 end.

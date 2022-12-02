@@ -16,7 +16,7 @@ type
     public
       constructor Create;
       class function New: iControllerOrdersInterfaces;
-      function find(const ADataSet: TDataSet): iControllerOrdersInterfaces;
+      function find(var ADataSet: TDataSet): iControllerOrdersInterfaces;
       function save(const AOrder: TOrders): iControllerOrdersInterfaces;
       function delete(const AOrder: TOrders): iControllerOrdersInterfaces;
   end;
@@ -36,7 +36,7 @@ begin
   FModel.delete(AOrder);
 end;
 
-function TControllerOrders.find(const ADataSet: TDataSet): iControllerOrdersInterfaces;
+function TControllerOrders.find(var ADataSet: TDataSet): iControllerOrdersInterfaces;
 begin
   Result := Self;
   FModel.find(ADataSet);

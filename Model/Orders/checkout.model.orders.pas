@@ -6,6 +6,7 @@ uses
   System.SysUtils,
   System.Classes,
   Data.DB,
+  DataSnap.DBClient,
   checkout.model.orders.ordersinterfaces,
   checkout.model.entity.orders;
 
@@ -18,7 +19,7 @@ type
       constructor Create;
       class function New: iModelOrdersInterfaces;
 
-      function find(const ADataSet: TDataSet): iModelOrdersInterfaces;
+      function find(var ADataSet: TDataSet): iModelOrdersInterfaces;
       function save(const AOrder: TOrders): iModelOrdersInterfaces;
       function delete(const AOrder: TOrders): iModelOrdersInterfaces;
   end;
@@ -40,13 +41,10 @@ begin
   Result := Self;
 end;
 
-function TModelOrders.find(const ADataSet: TDataSet): iModelOrdersInterfaces;
-var
-  LDataSet: TDataSet;
+function TModelOrders.find(var ADataSet: TDataSet): iModelOrdersInterfaces;
 begin
   Result := Self;
-  LDataSet := nil;
-  ConnectionDB.DmConnection.Connection.ExecSQL('SELECT * FROM ORDERS', LDataSet);
+  ConnectionDB.DmConnection.Connection.ExecSQL('SELECT * FROM ORDERS', ADataSet);
 end;
 
 procedure TModelOrders.insert(const AOrder: TOrders);

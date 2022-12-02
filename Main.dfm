@@ -13,6 +13,7 @@ object FrmMain: TFrmMain
   OldCreateOrder = False
   WindowState = wsMaximized
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object pnlMain: TPanel
@@ -45,7 +46,6 @@ object FrmMain: TFrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 615
       object btnFinalizarVenda: TButton
         Left = 1024
         Top = 0
@@ -64,7 +64,6 @@ object FrmMain: TFrmMain
         Align = alLeft
         Caption = 'Cancelar'
         TabOrder = 1
-        ExplicitLeft = 1024
       end
     end
     object Panel2: TPanel
@@ -75,7 +74,6 @@ object FrmMain: TFrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 615
     end
     object LabeledEdit1: TLabeledEdit
       Left = 16
@@ -125,8 +123,6 @@ object FrmMain: TFrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 7
-      ExplicitLeft = 16
-      ExplicitTop = 51
       object btnAddProduto: TButton
         Left = 0
         Top = 0
@@ -139,7 +135,19 @@ object FrmMain: TFrmMain
     end
   end
   object dsProdutos: TDataSource
+    DataSet = FDMemTable1
     Left = 1056
     Top = 264
+  end
+  object FDMemTable1: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 984
+    Top = 336
   end
 end

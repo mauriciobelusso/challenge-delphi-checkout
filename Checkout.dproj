@@ -151,6 +151,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="Controller\Orders\checkout.controller.orders.ordersinterfaces.pas"/>
         <DCCReference Include="Controller\Orders\checkout.controller.orders.orders.pas"/>
         <DCCReference Include="Controller\Orders\checkout.controller.orders.ordersproducts.pas"/>
+        <DCCReference Include="Model\Orders\checkout.model.orders.orderproducts.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

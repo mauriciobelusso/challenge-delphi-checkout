@@ -8,11 +8,11 @@ uses
   checkout.model.orders;
 
 type
-  TModel = class(TInterfacedObject, iModelInterfaces)
+  TModel = class(TInterfacedObject, iModel)
     public
       constructor Create;
-      class function New: iModelInterfaces;
-      function Orders: iModelOrdersInterfaces;
+      class function New: iModel;
+      function Orders: iModelOrders;
   end;
 
 implementation
@@ -24,12 +24,12 @@ begin
 
 end;
 
-class function TModel.New: iModelInterfaces;
+class function TModel.New: iModel;
 begin
   Result := Self.Create;
 end;
 
-function TModel.Orders: iModelOrdersInterfaces;
+function TModel.Orders: iModelOrders;
 begin
   Result := TModelOrders.New;
 end;

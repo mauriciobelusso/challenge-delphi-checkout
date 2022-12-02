@@ -17,7 +17,8 @@ uses
   checkout.controller.controllerinterfaces in 'Controller\checkout.controller.controllerinterfaces.pas',
   checkout.controller.orders.ordersinterfaces in 'Controller\Orders\checkout.controller.orders.ordersinterfaces.pas',
   checkout.controller.orders.orders in 'Controller\Orders\checkout.controller.orders.orders.pas',
-  checkout.controller.orders.ordersproducts in 'Controller\Orders\checkout.controller.orders.ordersproducts.pas';
+  checkout.controller.orders.ordersproducts in 'Controller\Orders\checkout.controller.orders.ordersproducts.pas',
+  checkout.model.orders.orderproducts in 'Model\Orders\checkout.model.orders.orderproducts.pas';
 
 {$R *.res}
 

@@ -9,12 +9,12 @@ uses
   checkout.controller.orders.ordersproducts;
 
 type
-  TController = class(TInterfacedObject, iControllerInterfaces)
+  TController = class(TInterfacedObject, iController)
     public
       constructor Create;
-      class function New: iControllerInterfaces;
-      function Orders: iControllerOrdersInterfaces;
-      function OrdersProducts: iControllerOrdersProductsInterfaces;
+      class function New: iController;
+      function Orders: iControllerOrders;
+      function OrdersProducts: iControllerOrdersProducts;
   end;
 
 implementation
@@ -26,17 +26,17 @@ begin
 
 end;
 
-class function TController.New: iControllerInterfaces;
+class function TController.New: iController;
 begin
   Result := Self.Create;
 end;
 
-function TController.Orders: iControllerOrdersInterfaces;
+function TController.Orders: iControllerOrders;
 begin
   Result := TControllerOrders.New;
 end;
 
-function TController.OrdersProducts: iControllerOrdersProductsInterfaces;
+function TController.OrdersProducts: iControllerOrdersProducts;
 begin
   Result := TControllerOrdersProducts.New;
 end;

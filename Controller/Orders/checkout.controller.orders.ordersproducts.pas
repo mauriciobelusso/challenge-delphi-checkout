@@ -8,15 +8,15 @@ uses
   checkout.controller.orders.ordersinterfaces;
 
 type
-  TControllerOrdersProducts = class(TInterfacedObject, iControllerOrdersProductsInterfaces)
+  TControllerOrdersProducts = class(TInterfacedObject, iControllerOrdersProducts)
     public
       constructor Create;
-      class function New: iControllerOrdersProductsInterfaces;
+      class function New: iControllerOrdersProducts;
 
-      function Find(var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
-      function Save(const AOrder: TOrders): iControllerOrdersProductsInterfaces;
-      function Delete(const AOrder: TOrders): iControllerOrdersProductsInterfaces;
-      function FindByOrderId(const AOrderId: Integer; var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
+      function Find(var ADataSet: TDataSet): iControllerOrdersProducts;
+      function Save(const AOrder: TOrders): iControllerOrdersProducts;
+      function Delete(const AOrder: TOrders): iControllerOrdersProducts;
+      function FindByOrderId(const AOrderId: Integer; var ADataSet: TDataSet): iControllerOrdersProducts;
   end;
 
 implementation
@@ -29,30 +29,30 @@ begin
 end;
 
 function TControllerOrdersProducts.Delete(
-  const AOrder: TOrders): iControllerOrdersProductsInterfaces;
+  const AOrder: TOrders): iControllerOrdersProducts;
 begin
   Result := Self;
 end;
 
 function TControllerOrdersProducts.Find(
-  var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
+  var ADataSet: TDataSet): iControllerOrdersProducts;
 begin
   Result := Self;
 end;
 
 function TControllerOrdersProducts.FindByOrderId(const AOrderId: Integer;
-  var ADataSet: TDataSet): iControllerOrdersProductsInterfaces;
+  var ADataSet: TDataSet): iControllerOrdersProducts;
 begin
   Result := Self;
 end;
 
-class function TControllerOrdersProducts.New: iControllerOrdersProductsInterfaces;
+class function TControllerOrdersProducts.New: iControllerOrdersProducts;
 begin
   Result := Self.Create;
 end;
 
 function TControllerOrdersProducts.Save(
-  const AOrder: TOrders): iControllerOrdersProductsInterfaces;
+  const AOrder: TOrders): iControllerOrdersProducts;
 begin
   Result := Self;
 end;

@@ -11,16 +11,16 @@ uses
   checkout.controller.orders.ordersproducts;
 
 type
-  TControllerOrders = class(TInterfacedObject, iControllerOrdersInterfaces)
+  TControllerOrders = class(TInterfacedObject, iControllerOrders)
     private
-      FModel: iModelOrdersInterfaces;
+      FModel: iModelOrders;
     public
       constructor Create;
-      class function New: iControllerOrdersInterfaces;
-      function Find(var ADataSet: TDataSet): iControllerOrdersInterfaces;
-      function Save(const AOrder: TOrders): iControllerOrdersInterfaces;
-      function Delete(const AOrder: TOrders): iControllerOrdersInterfaces;
-      function Items(): iControllerOrdersProductsInterfaces;
+      class function New: iControllerOrders;
+      function Find(var ADataSet: TDataSet): iControllerOrders;
+      function Save(const AOrder: TOrders): iControllerOrders;
+      function Delete(const AOrder: TOrders): iControllerOrders;
+      function Items(): iControllerOrdersProducts;
   end;
 
 implementation
@@ -32,29 +32,29 @@ begin
   FModel := TModel.New.Orders;
 end;
 
-function TControllerOrders.Delete(const AOrder: TOrders): iControllerOrdersInterfaces;
+function TControllerOrders.Delete(const AOrder: TOrders): iControllerOrders;
 begin
   Result := Self;
   FModel.delete(AOrder);
 end;
 
-function TControllerOrders.Find(var ADataSet: TDataSet): iControllerOrdersInterfaces;
+function TControllerOrders.Find(var ADataSet: TDataSet): iControllerOrders;
 begin
   Result := Self;
   FModel.find(ADataSet);
 end;
 
-function TControllerOrders.Items: iControllerOrdersProductsInterfaces;
+function TControllerOrders.Items: iControllerOrdersProducts;
 begin
   Result := TControllerOrdersProducts.New;
 end;
 
-class function TControllerOrders.New: iControllerOrdersInterfaces;
+class function TControllerOrders.New: iControllerOrders;
 begin
   Result := Self.Create;
 end;
 
-function TControllerOrders.Save(const AOrder: TOrders): iControllerOrdersInterfaces;
+function TControllerOrders.Save(const AOrder: TOrders): iControllerOrders;
 begin
   Result := Self;
   FModel.Save(AOrder);

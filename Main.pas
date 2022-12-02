@@ -32,7 +32,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
-    FController: iControllerOrdersInterfaces;
+    FController: iControllerOrders;
   public
     { Public declarations }
   end;

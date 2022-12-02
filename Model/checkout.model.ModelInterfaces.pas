@@ -6,9 +6,9 @@ uses
   checkout.model.orders.ordersinterfaces;
 
 type
-  iModelInterfaces = interface
+  iModel = interface
   ['{1F7E52A0-4BAF-47A1-A2A5-6FE871BCDDAF}']
-    function Orders: iModelOrdersInterfaces;
+    function Orders: iModelOrders;
   end;
 
 implementation

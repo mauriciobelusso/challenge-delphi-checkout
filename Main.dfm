@@ -23,5 +23,123 @@ object FrmMain: TFrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
+    object DBGrid1: TDBGrid
+      Left = 0
+      Top = 136
+      Width = 1252
+      Height = 409
+      Align = alBottom
+      DataSource = dsProdutos
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+    end
+    object Panel1: TPanel
+      Left = 0
+      Top = 586
+      Width = 1252
+      Height = 41
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 1
+      ExplicitTop = 615
+      object btnFinalizarVenda: TButton
+        Left = 1024
+        Top = 0
+        Width = 228
+        Height = 41
+        Align = alRight
+        Caption = 'Finalizar Venda'
+        TabOrder = 0
+        OnClick = btnFinalizarVendaClick
+      end
+      object btnCancelar: TButton
+        Left = 0
+        Top = 0
+        Width = 228
+        Height = 41
+        Align = alLeft
+        Caption = 'Cancelar'
+        TabOrder = 1
+        ExplicitLeft = 1024
+      end
+    end
+    object Panel2: TPanel
+      Left = 0
+      Top = 545
+      Width = 1252
+      Height = 41
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 2
+      ExplicitTop = 615
+    end
+    object LabeledEdit1: TLabeledEdit
+      Left = 16
+      Top = 24
+      Width = 200
+      Height = 21
+      EditLabel.Width = 61
+      EditLabel.Height = 13
+      EditLabel.Caption = 'LabeledEdit1'
+      TabOrder = 3
+    end
+    object LabeledEdit2: TLabeledEdit
+      Left = 16
+      Top = 67
+      Width = 200
+      Height = 21
+      EditLabel.Width = 61
+      EditLabel.Height = 13
+      EditLabel.Caption = 'LabeledEdit1'
+      TabOrder = 4
+    end
+    object LabeledEdit3: TLabeledEdit
+      Left = 222
+      Top = 67
+      Width = 121
+      Height = 21
+      EditLabel.Width = 61
+      EditLabel.Height = 13
+      EditLabel.Caption = 'LabeledEdit1'
+      TabOrder = 5
+    end
+    object LabeledEdit4: TLabeledEdit
+      Left = 349
+      Top = 67
+      Width = 121
+      Height = 21
+      EditLabel.Width = 61
+      EditLabel.Height = 13
+      EditLabel.Caption = 'LabeledEdit1'
+      TabOrder = 6
+    end
+    object Panel3: TPanel
+      Left = 0
+      Top = 95
+      Width = 1252
+      Height = 41
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 7
+      ExplicitLeft = 16
+      ExplicitTop = 51
+      object btnAddProduto: TButton
+        Left = 0
+        Top = 0
+        Width = 228
+        Height = 41
+        Align = alLeft
+        Caption = 'Inserir'
+        TabOrder = 0
+      end
+    end
+  end
+  object dsProdutos: TDataSource
+    Left = 1056
+    Top = 264
   end
 end

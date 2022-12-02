@@ -15,7 +15,8 @@ uses
   checkout.model.modelinterfaces in 'Model\checkout.model.modelinterfaces.pas',
   checkout.controller.controller in 'Controller\checkout.controller.controller.pas',
   checkout.controller.controllerinterfaces in 'Controller\checkout.controller.controllerinterfaces.pas',
-  checkout.controller.orders.ordersinterfaces in 'Controller\Orders\checkout.controller.orders.ordersinterfaces.pas';
+  checkout.controller.orders.ordersinterfaces in 'Controller\Orders\checkout.controller.orders.ordersinterfaces.pas',
+  checkout.controller.orders.orders in 'Controller\Orders\checkout.controller.orders.orders.pas';
 
 {$R *.res}
 

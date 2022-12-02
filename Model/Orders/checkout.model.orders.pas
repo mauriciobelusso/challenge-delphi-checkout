@@ -6,21 +6,21 @@ uses
   System.SysUtils,
   System.Classes,
   Data.DB,
-  checkout.model.orders.interfaces,
+  checkout.model.orders.ordersinterfaces,
   checkout.model.entity.orders;
 
 type
-  TModelOrders = class(TInterfacedObject, iOrdersInterfaces)
+  TModelOrders = class(TInterfacedObject, iModelOrdersInterfaces)
     private
       procedure insert(const AOrder: TOrders);
       procedure update(const AOrder: TOrders);
     public
       constructor Create;
-      class function New: iOrdersInterfaces;
+      class function New: iModelOrdersInterfaces;
 
-      function find(const ADataSet: TDataSet): iOrdersInterfaces;
-      function save(const AOrder: TOrders): iOrdersInterfaces;
-      function delete(const AOrder: TOrders): iOrdersInterfaces;
+      function find(const ADataSet: TDataSet): iModelOrdersInterfaces;
+      function save(const AOrder: TOrders): iModelOrdersInterfaces;
+      function delete(const AOrder: TOrders): iModelOrdersInterfaces;
   end;
 
 implementation
@@ -35,12 +35,12 @@ begin
 
 end;
 
-function TModelOrders.delete(const AOrder: TOrders): iOrdersInterfaces;
+function TModelOrders.delete(const AOrder: TOrders): iModelOrdersInterfaces;
 begin
   Result := Self;
 end;
 
-function TModelOrders.find(const ADataSet: TDataSet): iOrdersInterfaces;
+function TModelOrders.find(const ADataSet: TDataSet): iModelOrdersInterfaces;
 var
   LDataSet: TDataSet;
 begin
@@ -80,12 +80,12 @@ begin
   end;
 end;
 
-class function TModelOrders.New: iOrdersInterfaces;
+class function TModelOrders.New: iModelOrdersInterfaces;
 begin
   Result := Self.Create;
 end;
 
-function TModelOrders.save(const AOrder: TOrders): iOrdersInterfaces;
+function TModelOrders.save(const AOrder: TOrders): iModelOrdersInterfaces;
 begin
   Result := Self;
   if AOrder.ID = 0 then

@@ -4,20 +4,20 @@ interface
 
 uses
   checkout.model.ModelInterfaces,
-  checkout.model.orders.interfaces,
+  checkout.model.orders.ordersinterfaces,
   checkout.model.orders;
 
 type
   TModel = class(TInterfacedObject, iModelInterfaces)
     public
-      function Orders: iOrdersInterfaces;
+      function Orders: iModelOrdersInterfaces;
   end;
 
 implementation
 
 { TModel }
 
-function TModel.Orders: iOrdersInterfaces;
+function TModel.Orders: iModelOrdersInterfaces;
 begin
   Result := TModelOrders.New;
 end;

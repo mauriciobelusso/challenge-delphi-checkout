@@ -14,7 +14,7 @@ object DmConnection: TDmConnection
     Top = 88
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
-    VendorLib = 'libmysql.dll'
+    VendorLib = 'lib\libmysql.dll'
     Left = 96
     Top = 32
   end

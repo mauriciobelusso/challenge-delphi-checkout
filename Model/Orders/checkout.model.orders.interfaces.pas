@@ -7,10 +7,11 @@ uses
   checkout.model.entity.orders;
 
 type
-  TOrdersInterfaces = interface
-    function find(const ADataSet: TDataSet): TOrdersInterfaces;
-    function save(const AOrder: TOrders): TOrdersInterfaces;
-    function delete(const AOrder: TOrders): TOrdersInterfaces;
+  iOrdersInterfaces = interface
+  ['{85DCC1A2-65BE-45AF-ABA0-66A4A982ADD3}']
+    function find(const ADataSet: TDataSet): iOrdersInterfaces;
+    function save(const AOrder: TOrders): iOrdersInterfaces;
+    function delete(const AOrder: TOrders): iOrdersInterfaces;
   end;
 
 implementation

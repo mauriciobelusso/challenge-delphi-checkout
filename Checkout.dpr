@@ -2,13 +2,13 @@ program Checkout;
 
 uses
   Vcl.Forms,
-  Main in 'Main.pas' {Form1};
+  Main in 'Main.pas' {FrmMain};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TFrmMain, FrmMain);
   Application.Run;
 end.

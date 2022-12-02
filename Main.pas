@@ -6,10 +6,10 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.Grids,
   Vcl.DBGrids, Vcl.StdCtrls, ConnectionDB, checkout.controller.controller,
-  checkout.controller.orders.ordersinterfaces, Datasnap.DBClient,
-  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
-  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  checkout.controller.orders.ordersinterfaces, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
 
 type
   TFrmMain = class(TForm)
@@ -60,7 +60,6 @@ procedure TFrmMain.FormShow(Sender: TObject);
 var
   LQuery: TFDQuery;
 begin
-  LQuery := TFDQuery.Create(Self);
   try
     FController.find(TDataSet(LQuery));
     FDMemTable1.CloneCursor(LQuery);

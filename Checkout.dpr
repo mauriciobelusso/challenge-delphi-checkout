@@ -11,11 +11,11 @@ uses
   checkout.model.orders in 'Model\Orders\checkout.model.orders.pas',
   checkout.model.orders.ordersinterfaces in 'Model\Orders\checkout.model.orders.ordersinterfaces.pas',
   ConnectionDB in 'ConnectionDB.pas' {DmConnection: TDataModule},
-  checkout.model.Model in 'Model\checkout.model.Model.pas',
-  checkout.model.ModelInterfaces in 'Model\checkout.model.ModelInterfaces.pas',
-  checkout.controller.Controller in 'Controller\checkout.controller.Controller.pas',
-  checkout.controller.ControllerInterfaces in 'Controller\checkout.controller.ControllerInterfaces.pas',
-  checkout.controller.orders.OrdersInterfaces in 'Controller\Orders\checkout.controller.orders.OrdersInterfaces.pas';
+  checkout.model.model in 'Model\checkout.model.model.pas',
+  checkout.model.modelinterfaces in 'Model\checkout.model.modelinterfaces.pas',
+  checkout.controller.controller in 'Controller\checkout.controller.controller.pas',
+  checkout.controller.controllerinterfaces in 'Controller\checkout.controller.controllerinterfaces.pas',
+  checkout.controller.orders.ordersinterfaces in 'Controller\Orders\checkout.controller.orders.ordersinterfaces.pas';
 
 {$R *.res}
 

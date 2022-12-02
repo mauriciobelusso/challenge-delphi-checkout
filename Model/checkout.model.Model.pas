@@ -1,4 +1,4 @@
-unit checkout.model.Model;
+unit checkout.model.model;
 
 interface
 

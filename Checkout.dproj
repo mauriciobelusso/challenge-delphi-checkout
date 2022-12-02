@@ -145,11 +145,11 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="Model\checkout.model.Model.pas"/>
-        <DCCReference Include="Model\checkout.model.ModelInterfaces.pas"/>
-        <DCCReference Include="Controller\checkout.controller.Controller.pas"/>
-        <DCCReference Include="Controller\checkout.controller.ControllerInterfaces.pas"/>
-        <DCCReference Include="Controller\Orders\checkout.controller.orders.OrdersInterfaces.pas"/>
+        <DCCReference Include="Model\checkout.model.model.pas"/>
+        <DCCReference Include="Model\checkout.model.modelinterfaces.pas"/>
+        <DCCReference Include="Controller\checkout.controller.controller.pas"/>
+        <DCCReference Include="Controller\checkout.controller.controllerinterfaces.pas"/>
+        <DCCReference Include="Controller\Orders\checkout.controller.orders.ordersinterfaces.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -140,7 +140,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="Model\Entity\checkout.model.entity.orders_products.pas"/>
         <DCCReference Include="Model\Orders\checkout.model.orders.pas"/>
         <DCCReference Include="Model\Orders\checkout.model.orders.interfaces.pas"/>
-        <DCCReference Include="DBConnection.pas">
+        <DCCReference Include="ConnectionDB.pas">
             <Form>DmConnection</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>

@@ -23,11 +23,11 @@ implementation
 
 {$R *.dfm}
 
-uses DBConnection;
+uses ConnectionDB;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
 begin
-  DBConnection.DmConnection.Connection.Connected := True;
+  ConnectionDB.DmConnection.Connection.Connected := True;
 end;
 
 end.

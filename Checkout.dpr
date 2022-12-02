@@ -10,7 +10,7 @@ uses
   checkout.model.entity.orders_products in 'Model\Entity\checkout.model.entity.orders_products.pas',
   checkout.model.orders in 'Model\Orders\checkout.model.orders.pas',
   checkout.model.orders.interfaces in 'Model\Orders\checkout.model.orders.interfaces.pas',
-  DBConnection in 'DBConnection.pas' {DmConnection: TDataModule};
+  ConnectionDB in 'ConnectionDB.pas' {DmConnection: TDataModule};
 
 {$R *.res}
 

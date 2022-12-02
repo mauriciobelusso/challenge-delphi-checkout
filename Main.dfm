@@ -12,6 +12,7 @@ object FrmMain: TFrmMain
   Font.Style = []
   OldCreateOrder = False
   WindowState = wsMaximized
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object pnlMain: TPanel
@@ -22,9 +23,5 @@ object FrmMain: TFrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 232
-    ExplicitTop = 48
-    ExplicitWidth = 185
-    ExplicitHeight = 41
   end
 end

@@ -37,6 +37,45 @@ object FrmMain: TFrmMain
       TitleFont.Height = -11
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
+      Columns = <
+        item
+          Alignment = taRightJustify
+          Expanded = False
+          FieldName = 'PRODUCT_ID'
+          ReadOnly = True
+          Title.Caption = 'C'#243'd. Produto'
+          Width = 100
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'DESCRIPTION'
+          ReadOnly = True
+          Title.Caption = 'Produto'
+          Width = 300
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'QUANTITY'
+          Title.Caption = 'Quantidade'
+          Visible = True
+        end
+        item
+          Alignment = taRightJustify
+          Expanded = False
+          FieldName = 'UNIT_VALUE'
+          Title.Caption = 'Valor Unit'#225'rio'
+          Width = 89
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'TOTAL'
+          ReadOnly = True
+          Title.Caption = 'Total'
+          Visible = True
+        end>
     end
     object Panel1: TPanel
       Left = 0
@@ -52,7 +91,7 @@ object FrmMain: TFrmMain
         Width = 228
         Height = 41
         Align = alRight
-        Caption = 'Finalizar Venda'
+        Caption = 'Gravar Pedido'
         TabOrder = 0
         OnClick = btnFinalizarVendaClick
       end
@@ -140,6 +179,8 @@ object FrmMain: TFrmMain
     Top = 264
   end
   object FDMemTable1: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -147,6 +188,7 @@ object FrmMain: TFrmMain
     UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
     Left = 984
     Top = 336
   end

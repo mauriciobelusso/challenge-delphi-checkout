@@ -46,7 +46,7 @@ implementation
 
 procedure TFrmMain.btnFinalizarVendaClick(Sender: TObject);
 begin
-  FController.save(nil);
+  FController.Save(nil);
 end;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
@@ -62,7 +62,7 @@ var
 begin
   LQuery := nil;
   try
-    FController.find(TDataSet(LQuery));
+    FController.Items.FindByOrderId(0, TDataSet(LQuery));
     FDMemTable1.CloneCursor(LQuery);
   finally
     LQuery.Free;

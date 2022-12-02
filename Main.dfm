@@ -26,12 +26,12 @@ object FrmMain: TFrmMain
     TabOrder = 0
     object DBGrid1: TDBGrid
       Left = 0
-      Top = 136
+      Top = 175
       Width = 1252
-      Height = 409
-      Align = alBottom
+      Height = 361
+      Align = alClient
       DataSource = dsProdutos
-      TabOrder = 0
+      TabOrder = 2
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
       TitleFont.Height = -11
@@ -59,6 +59,7 @@ object FrmMain: TFrmMain
           Expanded = False
           FieldName = 'QUANTITY'
           Title.Caption = 'Quantidade'
+          Width = 71
           Visible = True
         end
         item
@@ -74,6 +75,7 @@ object FrmMain: TFrmMain
           FieldName = 'TOTAL'
           ReadOnly = True
           Title.Caption = 'Total'
+          Width = 107
           Visible = True
         end>
     end
@@ -84,7 +86,7 @@ object FrmMain: TFrmMain
       Height = 41
       Align = alBottom
       BevelOuter = bvNone
-      TabOrder = 1
+      TabOrder = 4
       object btnFinalizarVenda: TButton
         Left = 1024
         Top = 0
@@ -92,7 +94,7 @@ object FrmMain: TFrmMain
         Height = 41
         Align = alRight
         Caption = 'Gravar Pedido'
-        TabOrder = 0
+        TabOrder = 1
         OnClick = btnFinalizarVendaClick
       end
       object btnCancelar: TButton
@@ -102,74 +104,143 @@ object FrmMain: TFrmMain
         Height = 41
         Align = alLeft
         Caption = 'Cancelar'
-        TabOrder = 1
+        TabOrder = 0
       end
     end
     object Panel2: TPanel
       Left = 0
-      Top = 545
+      Top = 536
       Width = 1252
-      Height = 41
+      Height = 50
       Align = alBottom
       BevelOuter = bvNone
-      TabOrder = 2
-    end
-    object LabeledEdit1: TLabeledEdit
-      Left = 16
-      Top = 24
-      Width = 200
-      Height = 21
-      EditLabel.Width = 61
-      EditLabel.Height = 13
-      EditLabel.Caption = 'LabeledEdit1'
       TabOrder = 3
-    end
-    object LabeledEdit2: TLabeledEdit
-      Left = 16
-      Top = 67
-      Width = 200
-      Height = 21
-      EditLabel.Width = 61
-      EditLabel.Height = 13
-      EditLabel.Caption = 'LabeledEdit1'
-      TabOrder = 4
-    end
-    object LabeledEdit3: TLabeledEdit
-      Left = 222
-      Top = 67
-      Width = 121
-      Height = 21
-      EditLabel.Width = 61
-      EditLabel.Height = 13
-      EditLabel.Caption = 'LabeledEdit1'
-      TabOrder = 5
-    end
-    object LabeledEdit4: TLabeledEdit
-      Left = 349
-      Top = 67
-      Width = 121
-      Height = 21
-      EditLabel.Width = 61
-      EditLabel.Height = 13
-      EditLabel.Caption = 'LabeledEdit1'
-      TabOrder = 6
+      ExplicitTop = 530
+      DesignSize = (
+        1252
+        50)
+      object edtTotal: TLabeledEdit
+        Left = 1120
+        Top = 23
+        Width = 121
+        Height = 21
+        Anchors = [akTop, akRight]
+        EditLabel.Width = 24
+        EditLabel.Height = 13
+        EditLabel.Caption = 'Total'
+        ReadOnly = True
+        TabOrder = 0
+      end
     end
     object Panel3: TPanel
       Left = 0
-      Top = 95
+      Top = 134
       Width = 1252
       Height = 41
-      Align = alBottom
+      Align = alTop
       BevelOuter = bvNone
-      TabOrder = 7
+      TabOrder = 1
+      ExplicitTop = 95
       object btnAddProduto: TButton
         Left = 0
         Top = 0
-        Width = 228
+        Width = 153
         Height = 41
         Align = alLeft
         Caption = 'Inserir'
         TabOrder = 0
+        OnClick = btnAddProdutoClick
+      end
+    end
+    object Panel4: TPanel
+      Left = 0
+      Top = 0
+      Width = 1252
+      Height = 134
+      Align = alTop
+      BevelOuter = bvNone
+      TabOrder = 0
+      ExplicitHeight = 121
+      object lblClliente: TLabel
+        Left = 303
+        Top = 27
+        Width = 3
+        Height = 13
+      end
+      object lblProduct: TLabel
+        Left = 303
+        Top = 70
+        Width = 3
+        Height = 13
+      end
+      object edtCustomer: TLabeledEdit
+        Left = 97
+        Top = 24
+        Width = 200
+        Height = 21
+        EditLabel.Width = 33
+        EditLabel.Height = 13
+        EditLabel.Caption = 'Cliente'
+        TabOrder = 1
+      end
+      object edtProduct: TLabeledEdit
+        Left = 97
+        Top = 67
+        Width = 200
+        Height = 21
+        EditLabel.Width = 38
+        EditLabel.Height = 13
+        EditLabel.Caption = 'Produto'
+        ReadOnly = True
+        TabOrder = 3
+      end
+      object edtQuantity: TLabeledEdit
+        Left = 16
+        Top = 107
+        Width = 121
+        Height = 21
+        Alignment = taRightJustify
+        EditLabel.Width = 56
+        EditLabel.Height = 13
+        EditLabel.Caption = 'Quantidade'
+        TabOrder = 4
+        TextHint = '0'
+        OnKeyPress = edtQuantityKeyPress
+      end
+      object edtCustomerId: TEdit
+        Left = 16
+        Top = 24
+        Width = 75
+        Height = 21
+        Alignment = taRightJustify
+        NumbersOnly = True
+        TabOrder = 0
+        TextHint = '0'
+        OnExit = edtCustomerIdExit
+      end
+      object edtUnitValue: TLabeledEdit
+        Left = 143
+        Top = 107
+        Width = 121
+        Height = 21
+        Alignment = taRightJustify
+        EditLabel.Width = 64
+        EditLabel.Height = 13
+        EditLabel.Caption = 'Valor Unit'#225'rio'
+        TabOrder = 5
+        TextHint = '0'
+        OnKeyPress = edtUnitValueKeyPress
+      end
+      object edtProductId: TEdit
+        Left = 16
+        Top = 67
+        Width = 75
+        Height = 21
+        Alignment = taRightJustify
+        NumbersOnly = True
+        TabOrder = 2
+        TextHint = '0'
+        OnExit = edtProductIdExit
       end
     end
   end

@@ -81,10 +81,10 @@ function TModelOrdersProducts.Save(
   const AOrderProducts: TORDERS_PRODUCTS): iModelOrdersProducts;
 begin
   Result := Self;
-  if AOrderProducts.ID = 0 then
-    Insert(AOrderProducts)
+  if AOrderProducts.ID > 0 then
+    Update(AOrderProducts)
   else
-    Update(AOrderProducts);
+    Insert(AOrderProducts);
 end;
 
 procedure TModelOrdersProducts.Update(const AOrderProducts: TORDERS_PRODUCTS);

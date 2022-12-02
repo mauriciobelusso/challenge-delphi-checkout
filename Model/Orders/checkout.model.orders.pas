@@ -86,10 +86,10 @@ end;
 function TModelOrders.Save(const AOrder: TOrders): iModelOrders;
 begin
   Result := Self;
-  if AOrder.ID = 0 then
-    Insert(AOrder)
+  if AOrder.ID > 0 then
+    Update(AOrder)
   else
-    Update(AOrder);
+    Insert(AOrder);
 end;
 
 procedure TModelOrders.Update(const AOrder: TOrders);

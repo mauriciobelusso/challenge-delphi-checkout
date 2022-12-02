@@ -1,3 +1,7 @@
+DELETE FROM CUSTOMERS;
+
+COMMIT;
+
 INSERT INTO CUSTOMERS (name,city,uf)
 VALUES
   ("Kevin Bowen","Randburg","PA"),
@@ -20,6 +24,12 @@ VALUES
   ("Barrett Bartlett","Denpasar","GO"),
   ("Alisa Bradley","Ongole","PA"),
   ("Basil Herman","Tehuacán","PR");
+
+COMMIT; 
+
+DELETE FROM PRODUCTS; 
+
+COMMIT;
 
 INSERT INTO PRODUCTS (description,sale_price)
 VALUES
@@ -44,4 +54,4 @@ VALUES
   ("Justine","92.42"),
   ("Jemima","66.87");
 
-commit;
+COMMIT;

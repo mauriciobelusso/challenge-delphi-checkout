@@ -15,11 +15,12 @@ type
       FTOTAL: Currency;
       FPRODUCTS: TList<TORDERS_PRODUCTS>;
       function GetProducts: TList<TORDERS_PRODUCTS>;
+    procedure SetID(const Value: Integer);
     public
       procedure AddProduct(const AProduct: TORDERS_PRODUCTS);
       function RemoveProduct(const AProduct: TORDERS_PRODUCTS): Boolean;
 
-      property ID: Integer read FID write FID;
+      property ID: Integer read FID write SetID;
       property CUSTOMER_ID: Integer read FCUSTOMER_ID write FCUSTOMER_ID;
       property ISSUE_DATE: TDateTime read FISSUE_DATE write FISSUE_DATE;
       property TOTAL: Currency read FTOTAL write FTOTAL;
@@ -56,6 +57,18 @@ begin
     end;
   end;
   Result := LRemoved;
+end;
+
+procedure TORDERS.SetID(const Value: Integer);
+begin
+  if FID = 0 then
+  begin
+    FID := Value;
+    for var LProduct: TORDERS_PRODUCTS in FProducts do
+    begin
+      LProduct.ID := Value;
+    end;
+  end;
 end;
 
 end.

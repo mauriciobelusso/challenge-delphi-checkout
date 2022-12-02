@@ -50,8 +50,6 @@ begin
 end;
 
 procedure TModelOrders.insert(const AOrder: TOrders);
-var
-  LOrderId: Integer;
 begin
   ConnectionDB.DmConnection.Connection.Transaction.StartTransaction;
   try
@@ -61,7 +59,7 @@ begin
       [AOrder.CUSTOMER_ID, AOrder.ISSUE_DATE, AOrder.TOTAL]
     );
 
-    LOrderId := ConnectionDB.DmConnection.Connection.GetLastAutoGenValue('');
+    AOrder.ID := ConnectionDB.DmConnection.Connection.GetLastAutoGenValue('');
 
 //  FPRODUCTS: TList<TORDERS_PRODUCTS>;
 //    ConnectionDB.DmConnection.Connection.ExecSQL(

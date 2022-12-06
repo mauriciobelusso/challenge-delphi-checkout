@@ -9,7 +9,8 @@ uses
   checkout.controller.orders.ordersinterfaces, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, checkout.model.entity.orders, checkout.model.entity.orders_products;
+  FireDAC.Comp.Client, checkout.model.entity.orders, checkout.model.entity.orders_products,
+  Vcl.WinXCtrls;
 
 type
   TFrmMain = class(TForm)
@@ -173,7 +174,10 @@ begin
   end
   else if Key = VK_RETURN then
   begin
-    EditProduct;
+    if FDMemTable1.State = dsEdit then
+      FDMemTable1.Post
+    else
+      EditProduct;
   end;
 end;
 
@@ -256,7 +260,7 @@ procedure TFrmMain.FindCustomer;
 var
   LQry: TFDQuery;
 begin
-  if edtCustomerId.Text = EmptyStr then Exit;  
+  if edtCustomerId.Text = EmptyStr then Exit;
 
   LQry := nil;
   try

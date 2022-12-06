@@ -53,7 +53,8 @@ type
     procedure BindViewToModel(const AOrder: TORDERS);
     procedure BindViewToDataSet;
     procedure OpenOrderProducts;
-    procedure AddProduct;
+    procedure AddProductToGrid;
+    procedure MergeProduct;
     procedure SaveProduct;
     procedure CheckProduct;
     procedure FindCustomer;
@@ -61,6 +62,7 @@ type
     procedure EvaluateSubTotal;
     procedure NewOrder;
     procedure EditProduct;
+    procedure NewProduct;
   public
     { Public declarations }
   end;
@@ -72,12 +74,17 @@ implementation
 
 {$R *.dfm}
 
-procedure TFrmMain.AddProduct;
+procedure TFrmMain.MergeProduct;
+begin
+  SaveProduct;
+  NewProduct;
+end;
+
+procedure TFrmMain.AddProductToGrid;
 begin
   FDMemTable1.ReadOnly := False;
   FDMemTable1.Insert;
   BindViewToDataSet;
-  FDMemTable1.Post;
 end;
 
 procedure TFrmMain.BindViewToDataSet;
@@ -128,13 +135,7 @@ end;
 
 procedure TFrmMain.btnAddProdutoClick(Sender: TObject);
 begin
-  CheckProduct;
-  SaveProduct;
-  edtUnitValue.Text := EmptyStr;
-  edtQuantity.Text := EmptyStr;
-  edtProductId.Text := EmptyStr;
-  edtProduct.Text := EmptyStr;
-  edtProductId.SetFocus;
+  MergeProduct;
 end;
 
 procedure TFrmMain.btnFinalizarVendaClick(Sender: TObject);
@@ -154,11 +155,11 @@ end;
 
 procedure TFrmMain.CheckProduct;
 begin
-  if not (StrToIntDef(edtProductId.Text, 0) > 0) then
-    raise Exception.Create('Informe o Produto'); 
-  if not (StrToCurrDef(edtQuantity.Text, 0) > 0) then
+  if not (FDMemTable1.FieldByName('PRODUCT_ID').AsInteger > 0) then
+    raise Exception.Create('Informe o Produto');
+  if not (FDMemTable1.FieldByName('QUANTITY').AsFloat > 0) then
     raise Exception.Create('Informe a Quantidade');
-  if not (StrToCurrDef(edtUnitValue.Text, 0) > 0) then
+  if not (FDMemTable1.FieldByName('UNIT_VALUE').AsCurrency > 0) then
     raise Exception.Create('Informe o Valor Unitário');
 end;
 
@@ -175,7 +176,7 @@ begin
   else if Key = VK_RETURN then
   begin
     if FDMemTable1.State = dsEdit then
-      FDMemTable1.Post
+      MergeProduct
     else
       EditProduct;
   end;
@@ -252,6 +253,8 @@ end;
 
 procedure TFrmMain.FDMemTable1BeforePost(DataSet: TDataSet);
 begin
+  CheckProduct;
+
   FDMemTable1.FieldByName('TOTAL').AsCurrency :=
     FDMemTable1.FieldByName('QUANTITY').AsFloat * FDMemTable1.FieldByName('UNIT_VALUE').AsCurrency;
 end;
@@ -335,6 +338,15 @@ begin
   edtCustomerId.SetFocus;
 end;
 
+procedure TFrmMain.NewProduct;
+begin
+  edtUnitValue.Text := EmptyStr;
+  edtQuantity.Text := EmptyStr;
+  edtProductId.Text := EmptyStr;
+  edtProduct.Text := EmptyStr;
+  edtProductId.SetFocus;
+end;
+
 procedure TFrmMain.OpenOrderProducts;
 var
   LQuery: TFDQuery;
@@ -359,10 +371,16 @@ end;
 
 procedure TFrmMain.SaveProduct;
 begin
-  if (FDMemTable1.State = dsEdit) then
-    FDMemTable1.Post
-  else
-    AddProduct;
+  if not (FDMemTable1.State = dsEdit) then
+    AddProductToGrid;
+
+  try
+    FDMemTable1.Post;
+  except
+    if FDMemTable1.State = dsInsert then
+      FDMemTable1.Cancel;
+    raise;
+  end;
 end;
 
 end.

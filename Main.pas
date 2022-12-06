@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, checkout.model.entity.orders, checkout.model.entity.orders_products,
-  Vcl.WinXCtrls;
+  Vcl.WinXCtrls, Vcl.ComCtrls, checkout.view.orders, System.UITypes;
 
 type
   TFrmMain = class(TForm)
@@ -33,6 +33,12 @@ type
     edtTotal: TLabeledEdit;
     lblCustomer: TLabel;
     lblProduct: TLabel;
+    pnlSearch: TPanel;
+    lblOrder: TLabel;
+    edtOrderId: TSearchBox;
+    lblPedidoId: TLabel;
+    dtIssueDate: TDateTimePicker;
+    lblIssueDate: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnFinalizarVendaClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -45,6 +51,8 @@ type
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1AfterDelete(DataSet: TDataSet);
     procedure FDMemTable1BeforePost(DataSet: TDataSet);
+    procedure edtOrderIdInvokeSearch(Sender: TObject);
+    procedure edtOrderIdExit(Sender: TObject);
   private
     { Private declarations }
     FController: iControllerOrders;
@@ -52,7 +60,6 @@ type
     procedure BindViewToDataSet;
     procedure BindDataSetToView;
     procedure OpenOrderProducts;
-    procedure AddProductToGrid;
     procedure MergeProduct;
     procedure SaveProduct;
     procedure CheckProduct;
@@ -80,11 +87,6 @@ begin
   NewProduct;
 end;
 
-procedure TFrmMain.AddProductToGrid;
-begin
-  BindViewToDataSet;
-end;
-
 procedure TFrmMain.BindDataSetToView;
 begin
   edtProductId.Text := FDMemTable1.FieldByName('PRODUCT_ID').AsString;
@@ -108,8 +110,9 @@ var
   LBookmark: TBookmark;
   LProduct: TORDERS_PRODUCTS;
 begin
+  AOrder.ID := StrToIntDef(edtOrderId.Text, 0);
   AOrder.CUSTOMER_ID := StrToIntDef(edtCustomerId.Text, 0);
-  AOrder.ISSUE_DATE := Now;
+  AOrder.ISSUE_DATE := Trunc(dtIssueDate.DateTime);
   AOrder.TOTAL := StrToCurrDef(edtTotal.Text, 0);
 
   try
@@ -122,7 +125,7 @@ begin
       try
         LProduct.ID := FDMemTable1.FieldByName('ID').AsInteger;
         LProduct.PRODUCT_ID := FDMemTable1.FieldByName('PRODUCT_ID').AsInteger;
-        LProduct.ORDER_ID := FDMemTable1.FieldByName('ORDER_ID').AsInteger;
+        LProduct.ORDER_ID := AOrder.ID;
         LProduct.QUANTITY := FDMemTable1.FieldByName('QUANTITY').AsFloat;
         LProduct.UNIT_VALUE := FDMemTable1.FieldByName('UNIT_VALUE').AsCurrency;
         LProduct.TOTAL := FDMemTable1.FieldByName('TOTAL').AsCurrency;
@@ -199,6 +202,50 @@ begin
   FindCustomer;
 end;
 
+procedure TFrmMain.edtOrderIdExit(Sender: TObject);
+var
+  LOrder: TORDERS;
+begin
+  LOrder := TORDERS.Create;
+  try
+    LOrder.ID := StrToIntDef(edtOrderId.Text, 0);
+    TController.New.Orders.FindById(LOrder);
+    if LOrder.ID > 0 then
+    begin
+      dtIssueDate.Date := LOrder.ISSUE_DATE;
+      edtCustomerId.Text := LOrder.CUSTOMER_ID.ToString;
+      FindCustomer;
+      OpenOrderProducts;
+    end;
+  finally
+    LOrder.Free;
+  end;
+end;
+
+procedure TFrmMain.edtOrderIdInvokeSearch(Sender: TObject);
+var
+  LDataSet: TFDQuery;
+begin
+  LDataSet := nil;
+  try
+    if not (StrToIntDef(edtOrderId.Text,0) > 0) then
+    begin
+      Application.CreateForm(TFrmOrders, FrmOrders);
+      TController.New.Orders.Find(TDataSet(LDataSet));
+      FrmOrders.FDMemTable1.CloneCursor(LDataSet);
+      FrmOrders.ShowModal;
+      edtOrderId.Text := FrmOrders.Order.Id.ToString;
+      dtIssueDate.Date := FrmOrders.Order.Issue_date;
+      edtCustomerId.Text := FrmOrders.Order.Customer_id.ToString;
+      FindCustomer;
+      OpenOrderProducts;
+    end;
+  finally
+    LDataSet.Free;
+    FreeAndNil(FrmOrders);
+  end;
+end;
+
 procedure TFrmMain.edtProductIdExit(Sender: TObject);
 begin
   FindProduct;
@@ -255,8 +302,6 @@ procedure TFrmMain.FindCustomer;
 var
   LQry: TFDQuery;
 begin
-  if edtCustomerId.Text = EmptyStr then Exit;
-
   LQry := nil;
   try
     TController.New
@@ -282,8 +327,6 @@ procedure TFrmMain.FindProduct;
 var
   LQry: TFDQuery;
 begin
-  if edtProductId.Text = EmptyStr then Exit;
-
   LQry := nil;
   try
     TController.New
@@ -315,12 +358,12 @@ end;
 
 procedure TFrmMain.FormShow(Sender: TObject);
 begin
+  dtIssueDate.DateTime := Now;
   OpenOrderProducts;
 end;
 
 procedure TFrmMain.NewOrder;
 begin
-  OpenOrderProducts;
   edtCustomer.Text := EmptyStr;
   edtCustomerId.Text := EmptyStr;
   edtProduct.Text := EmptyStr;
@@ -328,7 +371,9 @@ begin
   edtTotal.Text := EmptyStr;
   lblCustomer.Caption := EmptyStr;
   lblProduct.Caption := EmptyStr;
-  edtCustomerId.SetFocus;
+  edtOrderId.Text := EmptyStr;
+  edtOrderId.SetFocus;
+  OpenOrderProducts;
 end;
 
 procedure TFrmMain.NewProduct;
@@ -346,7 +391,7 @@ var
 begin
   LQuery := nil;
   try
-    FController.Items.FindByOrderId(0, TDataSet(LQuery));
+    FController.Items.FindByOrderId(StrToIntDef(edtOrderId.Text, 0), TDataSet(LQuery));
     FDMemTable1.CloneCursor(LQuery);
     for var LField: TField in FDMemTable1.Fields do
     begin
@@ -357,6 +402,7 @@ begin
         LFieldFloat.EditFormat := '0.00###';
       end;
     end;
+    EvaluateSubTotal;
   finally
     LQuery.Free;
   end;

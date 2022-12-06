@@ -13,6 +13,7 @@ type
   iControllerOrders = interface
     ['{51B0019E-F7E8-4C68-89B7-66EB1F7B8665}']
     function Find(var ADataSet: TDataSet): iControllerOrders;
+    function FindById(const AOrder: TORDERS): iControllerOrders;
     function Save(const AOrder: TOrders): iControllerOrders;
     function Delete(const AOrder: TOrders): iControllerOrders;
     function Items(): iControllerOrdersProducts;

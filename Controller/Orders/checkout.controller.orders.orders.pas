@@ -18,6 +18,7 @@ type
       constructor Create;
       class function New: iControllerOrders;
       function Find(var ADataSet: TDataSet): iControllerOrders;
+      function FindById(const AOrder: TORDERS): iControllerOrders;
       function Save(const AOrder: TOrders): iControllerOrders;
       function Delete(const AOrder: TOrders): iControllerOrders;
       function Items(): iControllerOrdersProducts;
@@ -42,6 +43,12 @@ function TControllerOrders.Find(var ADataSet: TDataSet): iControllerOrders;
 begin
   Result := Self;
   FModel.find(ADataSet);
+end;
+
+function TControllerOrders.FindById(const AOrder: TORDERS): iControllerOrders;
+begin
+  Result := Self;
+  FModel.FindById(AOrder);
 end;
 
 function TControllerOrders.Items: iControllerOrdersProducts;

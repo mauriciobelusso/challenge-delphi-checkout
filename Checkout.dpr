@@ -26,7 +26,8 @@ uses
   checkout.controller.customersinterfaces in 'Controller\checkout.controller.customersinterfaces.pas',
   checkout.controller.customers in 'Controller\checkout.controller.customers.pas',
   checkout.controller.products in 'Controller\checkout.controller.products.pas',
-  checkout.controller.productsinterfaces in 'Controller\checkout.controller.productsinterfaces.pas';
+  checkout.controller.productsinterfaces in 'Controller\checkout.controller.productsinterfaces.pas',
+  checkout.view.orders in 'View\checkout.view.orders.pas' {FrmOrders};
 
 {$R *.res}
 

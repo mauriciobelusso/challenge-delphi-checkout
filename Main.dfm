@@ -18,19 +18,20 @@ object FrmMain: TFrmMain
   TextHeight = 13
   object pnlMain: TPanel
     Left = 0
-    Top = 0
+    Top = 49
     Width = 1252
-    Height = 627
+    Height = 578
     Align = alClient
     BevelOuter = bvNone
-    TabOrder = 0
+    TabOrder = 1
     object DBGrid1: TDBGrid
       Left = 0
       Top = 175
       Width = 1252
-      Height = 361
+      Height = 312
       Align = alClient
       DataSource = dsProdutos
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       ReadOnly = True
       TabOrder = 2
       TitleFont.Charset = DEFAULT_CHARSET
@@ -80,7 +81,7 @@ object FrmMain: TFrmMain
     end
     object Panel1: TPanel
       Left = 0
-      Top = 586
+      Top = 537
       Width = 1252
       Height = 41
       Align = alBottom
@@ -99,7 +100,7 @@ object FrmMain: TFrmMain
     end
     object Panel2: TPanel
       Left = 0
-      Top = 536
+      Top = 487
       Width = 1252
       Height = 50
       Align = alBottom
@@ -230,6 +231,56 @@ object FrmMain: TFrmMain
         TextHint = '0'
         OnExit = edtProductIdExit
       end
+    end
+  end
+  object pnlSearch: TPanel
+    Left = 0
+    Top = 0
+    Width = 1252
+    Height = 49
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 0
+    object lblOrder: TLabel
+      Left = 143
+      Top = 25
+      Width = 3
+      Height = 13
+    end
+    object lblPedidoId: TLabel
+      Left = 16
+      Top = 7
+      Width = 32
+      Height = 13
+      Caption = 'Pedido'
+    end
+    object lblIssueDate: TLabel
+      Left = 143
+      Top = 7
+      Width = 38
+      Height = 13
+      Caption = 'Emiss'#227'o'
+    end
+    object edtOrderId: TSearchBox
+      Left = 16
+      Top = 22
+      Width = 121
+      Height = 21
+      Alignment = taRightJustify
+      NumbersOnly = True
+      TabOrder = 0
+      TextHint = '0'
+      OnExit = edtOrderIdExit
+      OnInvokeSearch = edtOrderIdInvokeSearch
+    end
+    object dtIssueDate: TDateTimePicker
+      Left = 143
+      Top = 22
+      Width = 186
+      Height = 21
+      Date = 44901.000000000000000000
+      Time = 0.779636944447702300
+      TabOrder = 1
     end
   end
   object dsProdutos: TDataSource

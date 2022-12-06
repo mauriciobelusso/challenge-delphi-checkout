@@ -3,6 +3,8 @@ unit checkout.model.orders.orderproducts;
 interface
 
 uses
+  System.SysUtils,
+  System.Classes,
   Data.DB,
   checkout.model.entity.orders_products,
   checkout.model.orders.ordersinterfaces,
@@ -64,12 +66,22 @@ end;
 
 procedure TModelOrdersProducts.Insert(const AOrderProducts: TORDERS_PRODUCTS);
 begin
-  ConnectionDB.DmConnection.Connection.ExecSQL(
-    'INSERT INTO ORDERS_PRODUCTS(ORDER_ID, PRODUCT_ID, QUANTITY, UNIT_VALUE, TOTAL)'+
-    ' VALUES (:ORDER_ID, :PRODUCT_ID, :QUANTITY, :UNIT_VALUE, :TOTAL)',
-    [AOrderProducts.ORDER_ID, AOrderProducts.PRODUCT_ID, AOrderProducts.QUANTITY, AOrderProducts.UNIT_VALUE, AOrderProducts.TOTAL]);
+  try
+    ConnectionDB.DmConnection.Connection.ExecSQL(
+      'INSERT INTO ORDERS_PRODUCTS(ORDER_ID, PRODUCT_ID, QUANTITY, UNIT_VALUE, TOTAL)'+
+      ' VALUES (:ORDER_ID, :PRODUCT_ID, :QUANTITY, :UNIT_VALUE, :TOTAL)',
+      [AOrderProducts.ORDER_ID, AOrderProducts.PRODUCT_ID, AOrderProducts.QUANTITY, AOrderProducts.UNIT_VALUE, AOrderProducts.TOTAL]);
 
-  AOrderProducts.ID := ConnectionDB.DmConnection.Connection.GetLastAutoGenValue('');
+    AOrderProducts.ID := ConnectionDB.DmConnection.Connection.GetLastAutoGenValue('');
+  except
+    on E: Exception do
+    begin
+      if E.Message.Contains('Cannot add or update a child row: a foreign key constraint fails') then
+        raise Exception.Create('Pedido não encontrado para atualização!')
+      else
+        raise;
+    end;
+  end;
 end;
 
 class function TModelOrdersProducts.New: iModelOrdersProducts;

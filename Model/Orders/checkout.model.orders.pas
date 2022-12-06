@@ -11,7 +11,7 @@ uses
   checkout.model.orders.ordersinterfaces,
   checkout.model.entity.orders,
   checkout.model.orders.orderproducts,
-  checkout.model.entity.orders_products;
+  checkout.model.entity.orders_products, FireDAC.Stan.Param;
 
 type
   TModelOrders = class(TInterfacedObject, iModelOrders)
@@ -24,6 +24,7 @@ type
       class function New: iModelOrders;
 
       function Find(var ADataSet: TDataSet): iModelOrders;
+      function FindById(const AOrder: TORDERS): iModelOrders;
       function Save(const AOrder: TOrders): iModelOrders;
       function Delete(const AOrder: TOrders): iModelOrders;
   end;
@@ -50,6 +51,26 @@ function TModelOrders.Find(var ADataSet: TDataSet): iModelOrders;
 begin
   Result := Self;
   ConnectionDB.DmConnection.Connection.ExecSQL('SELECT * FROM ORDERS', ADataSet);
+end;
+
+function TModelOrders.FindById(const AOrder: TORDERS): iModelOrders;
+var
+  LParams: TFDParams;
+  LDataSet: TDataSet;
+begin
+  Result := Self;
+  LDataSet := nil;
+  LParams := nil;
+  try
+    LParams := TFDParams.Create;
+    LParams.Add('ID', AOrder.ID);
+    ConnectionDB.DmConnection.Connection.ExecSQL('SELECT * FROM ORDERS WHERE ID = :ID', LParams, LDataSet);
+    AOrder.CUSTOMER_ID := LDataSet.FieldByName('CUSTOMER_ID').AsInteger;
+    AOrder.ISSUE_DATE := LDataSet.FieldByName('ISSUE_DATE').AsDateTime;
+    AOrder.TOTAL := LDataSet.FieldByName('TOTAL').AsCurrency;
+  finally
+    LParams.Free;
+  end;
 end;
 
 procedure TModelOrders.Insert(const AOrder: TOrders);

@@ -44,16 +44,22 @@ type
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1AfterDelete(DataSet: TDataSet);
     procedure FDMemTable1BeforePost(DataSet: TDataSet);
+    procedure FDMemTable1AfterCancel(DataSet: TDataSet);
+    procedure FDMemTable1AfterOpen(DataSet: TDataSet);
   private
     { Private declarations }
     FController: iControllerOrders;
     procedure BindViewToModel(const AOrder: TORDERS);
+    procedure BindViewToDataSet;
     procedure OpenOrderProducts;
     procedure AddProduct;
+    procedure SaveProduct;
     procedure CheckProduct;
     procedure FindCustomer;
     procedure FindProduct;
     procedure EvaluateSubTotal;
+    procedure NewOrder;
+    procedure EditProduct;
   public
     { Public declarations }
   end;
@@ -67,14 +73,20 @@ implementation
 
 procedure TFrmMain.AddProduct;
 begin
+  FDMemTable1.ReadOnly := False;
   FDMemTable1.Insert;
+  BindViewToDataSet;
+  FDMemTable1.Post;
+end;
+
+procedure TFrmMain.BindViewToDataSet;
+begin
   FDMemTable1.FieldByName('PRODUCT_ID').AsInteger := StrToIntDef(edtProductId.Text, 0);
   FDMemTable1.FieldByName('DESCRIPTION').ReadOnly := False;
   FDMemTable1.FieldByName('DESCRIPTION').AsString := edtProduct.Text;
   FDMemTable1.FieldByName('DESCRIPTION').ReadOnly := True;
   FDMemTable1.FieldByName('QUANTITY').AsFloat := StrToFloatDef(edtQuantity.Text, 0);
   FDMemTable1.FieldByName('UNIT_VALUE').AsCurrency:= StrToCurrDef(edtUnitValue.Text, 0);
-  FDMemTable1.Post;
 end;
 
 procedure TFrmMain.BindViewToModel(const AOrder: TORDERS);
@@ -116,7 +128,7 @@ end;
 procedure TFrmMain.btnAddProdutoClick(Sender: TObject);
 begin
   CheckProduct;
-  AddProduct;
+  SaveProduct;
   edtUnitValue.Text := EmptyStr;
   edtQuantity.Text := EmptyStr;
   edtProductId.Text := EmptyStr;
@@ -132,16 +144,9 @@ begin
   try
     BindViewToModel(LOrder);
     FController.Save(LOrder);
-    edtCustomer.Text := EmptyStr;
-    edtCustomerId.Text := EmptyStr;
-    edtProduct.Text := EmptyStr;
-    edtProductId.Text := EmptyStr;
-    OpenOrderProducts;
-    edtTotal.Text := EmptyStr;
-    lblCustomer.Caption := EmptyStr;
-    lblProduct.Caption := EmptyStr;
-    edtCustomerId.SetFocus;
+    NewOrder;
   finally
+    LOrder.FreeProducts;
     LOrder.Free;
   end;
 end;
@@ -161,9 +166,22 @@ procedure TFrmMain.DBGrid1KeyUp(Sender: TObject; var Key: Word;
 begin
   if FDMemTable1.IsEmpty then Exit;
   
-  if Key = 46 then
+  if Key = VK_DELETE then
+  begin
     if MessageDlg('Apagar registro?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
-       FDMemTable1.Delete;
+       FDMemTable1.Delete
+  end
+  else if Key = VK_RETURN then
+  begin
+    EditProduct;
+  end;
+end;
+
+procedure TFrmMain.EditProduct;
+begin
+  FDMemTable1.ReadOnly := False;
+  FDMemTable1.Edit;
+  btnAddProduto.Caption := 'Salvar';
 end;
 
 procedure TFrmMain.edtCustomerIdExit(Sender: TObject);
@@ -206,14 +224,26 @@ begin
   edtTotal.Text := FormatCurr('0.00',LSubTotal);
 end;
 
+procedure TFrmMain.FDMemTable1AfterCancel(DataSet: TDataSet);
+begin
+  FDMemTable1.ReadOnly := True;
+end;
+
 procedure TFrmMain.FDMemTable1AfterDelete(DataSet: TDataSet);
 begin
   EvaluateSubTotal;
 end;
 
+procedure TFrmMain.FDMemTable1AfterOpen(DataSet: TDataSet);
+begin
+  FDMemTable1.ReadOnly := True;
+end;
+
 procedure TFrmMain.FDMemTable1AfterPost(DataSet: TDataSet);
 begin
   EvaluateSubTotal;
+  btnAddProduto.Caption := 'Inserir';
+  FDMemTable1.ReadOnly := True;
 end;
 
 procedure TFrmMain.FDMemTable1BeforePost(DataSet: TDataSet);
@@ -226,6 +256,8 @@ procedure TFrmMain.FindCustomer;
 var
   LQry: TFDQuery;
 begin
+  if edtCustomerId.Text = EmptyStr then Exit;  
+
   LQry := nil;
   try
     TController.New
@@ -251,6 +283,8 @@ procedure TFrmMain.FindProduct;
 var
   LQry: TFDQuery;
 begin
+  if edtProductId.Text = EmptyStr then Exit;
+
   LQry := nil;
   try
     TController.New
@@ -284,6 +318,19 @@ begin
   OpenOrderProducts;
 end;
 
+procedure TFrmMain.NewOrder;
+begin
+  OpenOrderProducts;
+  edtCustomer.Text := EmptyStr;
+  edtCustomerId.Text := EmptyStr;
+  edtProduct.Text := EmptyStr;
+  edtProductId.Text := EmptyStr;
+  edtTotal.Text := EmptyStr;
+  lblCustomer.Caption := EmptyStr;
+  lblProduct.Caption := EmptyStr;
+  edtCustomerId.SetFocus;
+end;
+
 procedure TFrmMain.OpenOrderProducts;
 var
   LQuery: TFDQuery;
@@ -304,6 +351,14 @@ begin
   finally
     LQuery.Free;
   end;
+end;
+
+procedure TFrmMain.SaveProduct;
+begin
+  if (FDMemTable1.State = dsEdit) then
+    FDMemTable1.Post
+  else
+    AddProduct;
 end;
 
 end.

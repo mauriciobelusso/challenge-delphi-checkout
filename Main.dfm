@@ -240,8 +240,10 @@ object FrmMain: TFrmMain
     Top = 264
   end
   object FDMemTable1: TFDMemTable
+    AfterOpen = FDMemTable1AfterOpen
     BeforePost = FDMemTable1BeforePost
     AfterPost = FDMemTable1AfterPost
+    AfterCancel = FDMemTable1AfterCancel
     AfterDelete = FDMemTable1AfterDelete
     FieldDefs = <>
     IndexDefs = <>

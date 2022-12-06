@@ -22,6 +22,7 @@ type
 
       procedure AddProduct(const AProduct: TORDERS_PRODUCTS);
       function RemoveProduct(const AProduct: TORDERS_PRODUCTS): Boolean;
+      procedure FreeProducts;
 
       property ID: Integer read FID write SetID;
       property CUSTOMER_ID: Integer read FCUSTOMER_ID write FCUSTOMER_ID;
@@ -48,6 +49,12 @@ destructor TORDERS.Destroy;
 begin
   FPRODUCTS.Free;
   inherited;
+end;
+
+procedure TORDERS.FreeProducts;
+begin
+  for var LProduct in FPRODUCTS do
+    LProduct.Free;
 end;
 
 function TORDERS.GetProducts: TList<TORDERS_PRODUCTS>;

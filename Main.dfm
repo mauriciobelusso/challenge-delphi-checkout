@@ -31,6 +31,7 @@ object FrmMain: TFrmMain
       Height = 361
       Align = alClient
       DataSource = dsProdutos
+      ReadOnly = True
       TabOrder = 2
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
@@ -43,7 +44,6 @@ object FrmMain: TFrmMain
           Alignment = taRightJustify
           Expanded = False
           FieldName = 'PRODUCT_ID'
-          ReadOnly = True
           Title.Caption = 'C'#243'd. Produto'
           Width = 100
           Visible = True
@@ -51,7 +51,6 @@ object FrmMain: TFrmMain
         item
           Expanded = False
           FieldName = 'DESCRIPTION'
-          ReadOnly = True
           Title.Caption = 'Produto'
           Width = 300
           Visible = True
@@ -74,7 +73,6 @@ object FrmMain: TFrmMain
         item
           Expanded = False
           FieldName = 'TOTAL'
-          ReadOnly = True
           Title.Caption = 'Total'
           Width = 107
           Visible = True
@@ -240,10 +238,8 @@ object FrmMain: TFrmMain
     Top = 264
   end
   object FDMemTable1: TFDMemTable
-    AfterOpen = FDMemTable1AfterOpen
     BeforePost = FDMemTable1BeforePost
     AfterPost = FDMemTable1AfterPost
-    AfterCancel = FDMemTable1AfterCancel
     AfterDelete = FDMemTable1AfterDelete
     FieldDefs = <>
     IndexDefs = <>

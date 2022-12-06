@@ -187,6 +187,7 @@ end;
 
 procedure TFrmMain.EditProduct;
 begin
+  DBGrid1.Enabled := False;
   FDMemTable1.Edit;
   btnAddProduto.Caption := 'Salvar';
   BindDataSetToView;
@@ -298,6 +299,7 @@ begin
     begin
       lblProduct.Caption := EmptyStr;
       edtProduct.Text := LQry.FieldByName('DESCRIPTION').AsString;
+      edtUnitValue.Text := LQry.FieldByName('SALE_PRICE').AsString;
     end;
   finally
     LQry.Free;
@@ -351,8 +353,8 @@ begin
       if (LField is TFloatField) or (LField is TFMTBCDField) then
       begin
         var LFieldFloat := TFloatField(LField);
-        LFieldFloat.DisplayFormat := '0.00';
-        LFieldFloat.EditFormat := '0.00';
+        LFieldFloat.DisplayFormat := '0.00###';
+        LFieldFloat.EditFormat := '0.00###';
       end;
     end;
   finally
@@ -366,6 +368,7 @@ begin
     FDMemTable1.Insert;
   BindViewToDataSet;
   FDMemTable1.Post;
+  DBGrid1.Enabled := True;
 end;
 
 end.

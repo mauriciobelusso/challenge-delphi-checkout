@@ -70,6 +70,7 @@ begin
     AOrder.TOTAL := LDataSet.FieldByName('TOTAL').AsCurrency;
   finally
     LParams.Free;
+    LDataSet.Free;
   end;
 end;
 

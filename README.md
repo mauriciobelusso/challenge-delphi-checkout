@@ -13,4 +13,4 @@ O projeto é do tipo portátil, está pré configurado para acessar a database c
 
 ## Projeto
 
-O projeto foi concebido no modelo MVC utilizando técnicas de programação funcional, também utilizando design patterns como FACADE para reduzir o acoplamento, também é utilizado DataSet e Objetos para realizar um mix de técnicas.
+O projeto foi concebido no modelo MVC utilizando técnicas de programação funcional, também utilizando design patterns como FACADE para reduzir o acoplamento, também é utilizado DataSet e Objetos para realizar um mix de técnicas. Para persistência dos dados, foi utilizado o FireDAC.
